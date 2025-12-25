@@ -3,7 +3,7 @@ const pool = require('../config/db');
 
 exports.getParticipantsByMeetingId = async (meetingId) => {
   const res = await pool.query(
-    `SELECT p.participant_id, p.user_id, u.username, u.email, p.status
+    `SELECT p.participant_id, p.user_id, u.name, u.last_name, u.email, p.status
      FROM participants p
      JOIN users u ON p.user_id = u.user_id
      WHERE p.meeting_id = $1`,

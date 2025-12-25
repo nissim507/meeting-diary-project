@@ -7,6 +7,11 @@ exports.getAllUsers = async () => {
     return res.rows;
 };
 
+exports.getNameAndLastUsers = async () => {
+    const res = await pool.query('SELECT user_id, name, last_name FROM users');
+    return res.rows;
+};
+
 exports.getUsersByUsername = async (username) => {
     const result = await pool.query(
         'SELECT * FROM users WHERE username ILIKE $1', [`%${username}%`]
@@ -53,4 +58,12 @@ exports.updateUser = async (user) => {
 exports.deleteUser = async (id) => {
     const result = await pool.query(`DELETE FROM users WHERE user_id = $1 RETURNING *`, [id]);
     return result.rows[0] || null;
+};
+
+exports.getAllUsersWithNames = async () => {
+  const res = await pool.query(
+    `SELECT user_id, name, last_name, username, email
+     FROM users`
+  );
+  return res.rows;
 };

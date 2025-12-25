@@ -7,11 +7,7 @@ export default function MeetingCard({ meeting, token }) {
 
   const loadParticipants = async () => {
     try {
-      const data = await getParticipantsByMeeting(
-        meeting.meeting_id,
-        token
-      );
-      console.log('Participants data:', data);
+      const data = await getParticipantsByMeeting(meeting.meeting_id, token);
       setParticipants(data);
       setShowParticipants(!showParticipants);
     } catch (err) {
@@ -19,11 +15,29 @@ export default function MeetingCard({ meeting, token }) {
     }
   };
 
+  // open google maps brawser
+  const openGoogleMaps = (address) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    window.open(url, '_blank'); 
+  };
+
+  
+  const isZoom = meeting.place.toLowerCase().includes('zoom');
+
   return (
     <div style={{ border: '1px solid gray', padding: 10, marginBottom: 10 }}>
       <h4>{meeting.title}</h4>
       <p>
-        {meeting.time} – {meeting.place}
+        {meeting.time} – {meeting.place}{' '}
+        {!isZoom && (
+          <button
+            onClick={() => openGoogleMaps(meeting.place)}
+            title="Open in Google Maps"
+            style={{ cursor: 'pointer', marginLeft: 5 }}
+          >
+            show map
+          </button>
+        )}
       </p>
 
       <button onClick={loadParticipants}>
@@ -34,7 +48,7 @@ export default function MeetingCard({ meeting, token }) {
         <ul>
           {participants.map((p) => (
             <li key={p.participant_id}>
-              {p.username} – <b>{p.status}</b>
+              {p.name} {p.last_name} – <b>{p.status}</b>
             </li>
           ))}
         </ul>

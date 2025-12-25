@@ -65,3 +65,35 @@ export async function getParticipantsByMeeting(meetingId, token) {
   return await res.json();
 }
 
+export async function addMeeting(meeting, token) {
+  const res = await fetch('http://localhost:3000/meetings/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      meeting: meeting,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to add meeting');
+  }
+
+  return await res.json();
+}
+
+export async function getAllUsers(token) {
+  const res = await fetch('http://localhost:3000/users', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch users');
+  }
+
+  return await res.json();
+}

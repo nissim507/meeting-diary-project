@@ -5,6 +5,7 @@ const { authenticate } = require('../middleware/auth');
 
 module.exports = function(app) {
   app.get('/users', authenticate, getUsersByUsername);
+  app.get('/allusers', authenticate, getAllUsers)
   app.post('/users/add', addUser);
   app.post('/users/update', authenticate, updateUser);
   app.post('/users/login', login);
@@ -15,6 +16,23 @@ async function getUsersByUsername(req, res) {
   try {
     const username = req.query.username;
     const users = await userControl.getUsersByUsername(username);
+    if(users) 
+    {
+      res.status(200).json(users);
+    }else
+    {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } 
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+async function getAllUsers(req, res) {
+  try {
+    const username = req.query.username;
+    const users = await userControl.getAllUsers();
     if(users) 
     {
       res.status(200).json(users);

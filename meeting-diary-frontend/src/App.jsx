@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import CalendarTable from './components/calenderTable/CalendarTable';
+import AddMeeting from './components/AddMeeting/AddMeeting';
+
 
 
 
@@ -50,13 +52,21 @@ const renderLogout = ()=> {
 }
 
 const renderLogin = ()=> {
-  console.log(user);
-  return <div>
+  return (
+    <div>
       <h1>Welcome, {user.username}</h1>
+
       <button onClick={handleLogout}>Logout</button>
 
+      <AddMeeting
+        user={user}
+        token={token}
+        onMeetingAdded={() => window.location.reload()}
+      />
+
       <CalendarTable user={user} token={token} />
-    </div>;
+    </div>
+  );
 }
 
   return (

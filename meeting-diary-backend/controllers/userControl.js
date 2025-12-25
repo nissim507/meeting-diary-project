@@ -16,6 +16,10 @@ exports.getUsersByUsername = async (username) => {
   
 };
 
+exports.getAllUsers = async () => {
+    return await pool.getNameAndLastUsers();
+};
+
 exports.addUser = async (userData) => {
   if(!userData.username || !userData.email || !userData.password) 
   {
