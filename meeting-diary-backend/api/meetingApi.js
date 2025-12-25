@@ -48,7 +48,6 @@ async function getMeetingById(req, res) {
 
 async function addMeeting(req, res) {
   try {
-    console.log("Body received:", req.body);
     const newMeeting = req.body.meeting;
     const meeting = await meetingControl.addMeeting(newMeeting);
     res.status(201).json(meeting);

@@ -97,3 +97,14 @@ export async function getAllUsers(token) {
 
   return await res.json();
 }
+
+export const deleteMeeting = async (meetingId, token) => {
+  const res = await fetch(`http://localhost:3000/meetings/${meetingId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error('Failed to delete meeting');
+  return await res.json();
+};

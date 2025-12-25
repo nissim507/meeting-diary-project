@@ -12,14 +12,12 @@ export default function CalendarTable({ user, token }) {
 
   useEffect(() => {
     const fetchMeetings = async () => {
-      if(!user)
-        return;
+      if (!user) return;
       try {
         const date = selectedDate.format('YYYY-MM-DD');
-        console.log(' Selected date:', date);
-        console.log(' User ID:', user.id);
-        const data = await getMeetingsByDate(user.id, date, token);
-        console.log(' Meetings from server:', data); // ⭐ חשוב
+        console.log('Selected date:', date);
+        console.log('User ID:', user.user_id || user.id); // ודא שזה תואם ל־user שלך
+        const data = await getMeetingsByDate(user.user_id || user.id, date, token);
         setMeetings(data);
       } catch (err) {
         console.error(err);
@@ -27,6 +25,11 @@ export default function CalendarTable({ user, token }) {
     };
     fetchMeetings();
   }, [selectedDate, user, token]);
+
+  // פונקציה שתעדכן את ה־state אחרי מחיקה
+  const handleMeetingDeleted = (deletedId) => {
+    setMeetings(prev => prev.filter(m => m.meeting_id !== deletedId));
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -37,14 +40,19 @@ export default function CalendarTable({ user, token }) {
       <h3>Meetings on {selectedDate.format('YYYY-MM-DD')}</h3>
       <ul>
         {meetings.length === 0 ? (
-  <p>No meetings</p>
-) : (
-  meetings.map((m) => (
-      <li key={m.meeting_id}>
-        <MeetingCard meeting={m} token={token} />
-      </li>
-    ))
-)}
+          <p>No meetings</p>
+        ) : (
+          meetings.map((m) => (
+            <li key={m.meeting_id}>
+              <MeetingCard
+                meeting={m}
+                token={token}
+                user={user}
+                onMeetingDeleted={handleMeetingDeleted} // מעביר את הפונקציה לרכיב הילד
+              />
+            </li>
+          ))
+        )}
       </ul>
     </LocalizationProvider>
   );
