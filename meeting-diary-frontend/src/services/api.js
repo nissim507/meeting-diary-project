@@ -1,7 +1,7 @@
 const API_URL = "http://localhost:3000";
 
 /*
-  שולח בקשת התחברות לשרת
+ send login request to the server
 */
 export async function loginUser(username, password) {
   const res = await fetch(`${API_URL}/users/login`, {
@@ -21,7 +21,7 @@ export async function loginUser(username, password) {
 }
 
 /*
-  שולח בקשת הרשמה לשרת
+  send signup request to the server 
 */
 export async function signupUser(user) {
   const res = await fetch(`${API_URL}/users/add`, {
@@ -52,3 +52,16 @@ export async function getMeetingsByDate(userId, date, token) {
   }
   return await res.json();
 }
+
+export async function getParticipantsByMeeting(meetingId, token) {
+  const res = await fetch(`${API_URL}/participants/meeting/${meetingId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch participants');
+  }
+  return await res.json();
+}
+

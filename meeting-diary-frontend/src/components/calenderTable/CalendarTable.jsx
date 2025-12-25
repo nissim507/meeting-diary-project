@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import dayjs from 'dayjs';
 import { getMeetingsByDate } from '../../services/api';
-// import MeetingCard from '../MeetingCard/meetingCard';
+import MeetingCard from '../MeetingCard/meetingCard';
 
 export default function CalendarTable({ user, token }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -40,12 +40,10 @@ export default function CalendarTable({ user, token }) {
   <p>No meetings</p>
 ) : (
   meetings.map((m) => (
-    <li key={m.meeting_id}>
-    <strong>{m.title}</strong> <br />
-    {m.time} - {m.end_time} <br />
-    {m.place}
-    </li>
-  ))
+      <li key={m.meeting_id}>
+        <MeetingCard meeting={m} token={token} />
+      </li>
+    ))
 )}
       </ul>
     </LocalizationProvider>
