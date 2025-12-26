@@ -45,7 +45,7 @@ exports.addMeeting = async (newMeeting) => {
 
   if(!meeting || !meeting.meeting_id) 
   {
-    throw new Error('Failed to create meeting');
+    throw new Error('Failed to create a meeting');
   }
 
   //adding the owner to participants DB

@@ -13,7 +13,7 @@ export default function AddMeeting({ user, token, onMeetingAdded }) {
   useEffect(() => {
     async function loadUsers() {
       try {
-        // getting al the users with the name and last_name
+        // getting all the users with the name and last_name
         const res = await fetch('http://localhost:3000/allusers', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -21,9 +21,6 @@ export default function AddMeeting({ user, token, onMeetingAdded }) {
         });
         if (!res.ok) throw new Error('Failed to fetch users');
         const data = await res.json();
-
-        console.log("user login:",user);
-
 
         // filter the owner from the list
         const filteredUsers = data.filter(u => u.user_id !== user.id);
@@ -62,8 +59,6 @@ export default function AddMeeting({ user, token, onMeetingAdded }) {
       console.error(err);
     }
   };
-
-  console.log('USERS STATE:', users);
 
   return (
     <div style={{ border: '1px solid black', padding: 15, marginBottom: 20 }}>

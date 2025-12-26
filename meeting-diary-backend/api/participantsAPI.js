@@ -1,10 +1,9 @@
-
-
 const participantsControl = require('../controllers/participantsControl');
 const { authenticate } = require('../middleware/auth');
 
 module.exports = function(app) {
   app.get('/participants/meeting/:meetingId', authenticate, getParticipantsByMeeting);
+  app.get('/participants/not-in-meeting/:meetingId', authenticate, getUsersNotInMeeting);
   app.post('/participants/add', authenticate, addParticipant);
   app.post('/participants/update', authenticate, updateParticipantStatus);
   app.delete('/participants', authenticate, deleteParticipant);
@@ -59,6 +58,16 @@ async function deleteParticipant(req, res) {
     {
       res.status(404).json({ message: 'Participant not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+async function getUsersNotInMeeting(req, res) {
+  try {
+    const meetingId = parseInt(req.params.meetingId);
+    const users = await participantsControl.getUsersNotInMeeting(meetingId);
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

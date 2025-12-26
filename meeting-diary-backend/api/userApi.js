@@ -1,5 +1,3 @@
-
-
 const userControl = require('../controllers/userControl');
 const { authenticate } = require('../middleware/auth');
 

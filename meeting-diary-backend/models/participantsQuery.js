@@ -37,3 +37,18 @@ exports.deleteParticipant = async (meetingId, userId) => {
   );
   return res.rows[0] || null;
 };
+
+exports.getUsersNotInMeeting = async (meetingId) => {
+  const res = await pool.query(
+    `SELECT u.user_id, u.name, u.last_name, u.email
+     FROM users u
+     WHERE u.user_id NOT IN (
+       SELECT p.user_id
+       FROM participants p
+       WHERE p.meeting_id = $1
+     )
+     ORDER BY u.name, u.last_name`,
+    [meetingId]
+  );
+  return res.rows;
+};

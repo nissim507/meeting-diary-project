@@ -1,4 +1,3 @@
-
 const participantsQuery = require('../models/participantsQuery');
 
 exports.getParticipantsByMeeting = async (meetingId) => {
@@ -40,4 +39,11 @@ exports.deleteParticipant = async (meetingId, userId) => {
   } 
 
   return await participantsQuery.deleteParticipant(meetingId, userId);
+};
+
+exports.getUsersNotInMeeting = async (meetingId) => {
+  if (!meetingId) {
+    throw new Error('Meeting ID is required');
+  }
+  return await participantsQuery.getUsersNotInMeeting(meetingId);
 };

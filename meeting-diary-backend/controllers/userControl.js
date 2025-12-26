@@ -1,4 +1,3 @@
-
 const pool = require('../models/userQuery')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');

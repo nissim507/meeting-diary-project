@@ -15,8 +15,6 @@ export default function CalendarTable({ user, token }) {
       if (!user) return;
       try {
         const date = selectedDate.format('YYYY-MM-DD');
-        console.log('Selected date:', date);
-        console.log('User ID:', user.user_id || user.id); // ודא שזה תואם ל־user שלך
         const data = await getMeetingsByDate(user.user_id || user.id, date, token);
         setMeetings(data);
       } catch (err) {
@@ -26,7 +24,6 @@ export default function CalendarTable({ user, token }) {
     fetchMeetings();
   }, [selectedDate, user, token]);
 
-  // פונקציה שתעדכן את ה־state אחרי מחיקה
   const handleMeetingDeleted = (deletedId) => {
     setMeetings(prev => prev.filter(m => m.meeting_id !== deletedId));
   };
@@ -48,7 +45,7 @@ export default function CalendarTable({ user, token }) {
                 meeting={m}
                 token={token}
                 user={user}
-                onMeetingDeleted={handleMeetingDeleted} // מעביר את הפונקציה לרכיב הילד
+                onMeetingDeleted={handleMeetingDeleted}
               />
             </li>
           ))
