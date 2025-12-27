@@ -23,9 +23,9 @@ export async function signupUser(user) {
   });
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(error.message || "Signup failed");
+    throw new Error(error.message || res.statusText);
   }
-  return res.json();
+  return true;
 }
 
 // MEETINGS
@@ -104,7 +104,6 @@ export async function getUsersNotInMeeting(meetingId, token) {
 }
 
 export async function updateMeeting(meeting, token) {
-  console.log("meeting", meeting);
   const res = await fetch(`${API_URL}/meetings/update`, {
     method: 'POST',
     headers: {

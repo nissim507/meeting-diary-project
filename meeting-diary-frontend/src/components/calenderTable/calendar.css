@@ -1,0 +1,11 @@
+.calendarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.meetingsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}

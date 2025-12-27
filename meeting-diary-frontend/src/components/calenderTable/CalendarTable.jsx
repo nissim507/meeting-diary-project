@@ -5,6 +5,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import { getMeetingsByDate } from "../../services/api";
 import MeetingCard from "../MeetingCard/meetingCard";
+import "./calendar.css"
 
 export default function CalendarTable({ user, token }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -30,7 +31,6 @@ export default function CalendarTable({ user, token }) {
 
             return toSeconds(a.time) - toSeconds(b.time);
           });
-        console.log("🚀 ~ fetchMeetings ~ meetings:", meetings);
         setMeetings(meetings);
       } catch (err) {
         console.error(err);
@@ -44,13 +44,15 @@ export default function CalendarTable({ user, token }) {
   };
 
   return (
+    <div className="calendarContainer">
+
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendar
         date={selectedDate}
         onChange={(newDate) => setSelectedDate(newDate)}
       />
-      <h3>Meetings on {selectedDate.format("YYYY-MM-DD")}</h3>
-      <ul>
+      <h2>Meetings on {selectedDate.format("YYYY-MM-DD")}</h2>
+      <ul className="meetingsContainer">
         {meetings.length === 0 ? (
           <p>No meetings</p>
         ) : (
@@ -63,9 +65,10 @@ export default function CalendarTable({ user, token }) {
                 onMeetingDeleted={handleMeetingDeleted}
               />
             </li>
-          ))
+          ))            
         )}
       </ul>
     </LocalizationProvider>
+    </div>
   );
 }
