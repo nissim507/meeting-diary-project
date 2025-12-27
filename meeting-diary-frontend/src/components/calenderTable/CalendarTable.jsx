@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import dayjs from 'dayjs';
-import { getMeetingsByDate } from '../../services/api';
-import MeetingCard from '../MeetingCard/meetingCard';
+import { useState, useEffect } from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import dayjs from "dayjs";
+import { getMeetingsByDate } from "../../services/api";
+import MeetingCard from "../MeetingCard/meetingCard";
 
 export default function CalendarTable({ user, token }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -14,9 +14,24 @@ export default function CalendarTable({ user, token }) {
     const fetchMeetings = async () => {
       if (!user) return;
       try {
-        const date = selectedDate.format('YYYY-MM-DD');
-        const data = await getMeetingsByDate(user.user_id || user.id, date, token);
-        setMeetings(data);
+        const date = selectedDate.format("YYYY-MM-DD");
+        const data = await getMeetingsByDate(
+          user.user_id || user.id,
+          date,
+          token
+        );
+        const meetings = data
+          .map((m) => ({ ...m, date: m.date.split("T")[0] }))
+          .sort((a, b) => {
+            const toSeconds = (t) => {
+              const [h, m, s] = t.split(":").map(Number);
+              return h * 3600 + m * 60 + s;
+            };
+
+            return toSeconds(a.time) - toSeconds(b.time);
+          });
+        console.log("🚀 ~ fetchMeetings ~ meetings:", meetings);
+        setMeetings(meetings);
       } catch (err) {
         console.error(err);
       }
@@ -25,7 +40,7 @@ export default function CalendarTable({ user, token }) {
   }, [selectedDate, user, token]);
 
   const handleMeetingDeleted = (deletedId) => {
-    setMeetings(prev => prev.filter(m => m.meeting_id !== deletedId));
+    setMeetings((prev) => prev.filter((m) => m.meeting_id !== deletedId));
   };
 
   return (
@@ -34,7 +49,7 @@ export default function CalendarTable({ user, token }) {
         date={selectedDate}
         onChange={(newDate) => setSelectedDate(newDate)}
       />
-      <h3>Meetings on {selectedDate.format('YYYY-MM-DD')}</h3>
+      <h3>Meetings on {selectedDate.format("YYYY-MM-DD")}</h3>
       <ul>
         {meetings.length === 0 ? (
           <p>No meetings</p>

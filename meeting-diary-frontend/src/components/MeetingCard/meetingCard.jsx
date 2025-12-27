@@ -5,10 +5,12 @@ import {
   changeMyStatus,
   addParticipant,
   removeParticipant,
-  getUsersNotInMeeting
+  getUsersNotInMeeting,
+  updateMeeting
 } from '../../services/api';
 
 export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) {
+  console.log("🚀 ~ MeetingCard ~ meeting:", meeting);
   const [participants, setParticipants] = useState([]);
   const [showParticipants, setShowParticipants] = useState(false);
   const [showStatusSelect, setShowStatusSelect] = useState(false);
@@ -18,6 +20,21 @@ export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) 
   const [showAddUser, setShowAddUser] = useState(false);
   const [addingUser, setAddingUser] = useState(false);
   const [usersNotInMeeting, setUsersNotInMeeting] = useState([]);
+
+  // Edit meeting
+  const [showEditMeeting, setShowEditMeeting] = useState(false);
+  const [editMeetingData, setEditMeetingData] = useState({
+    title: meeting.title || '',
+    date: meeting.date || '',
+    time: meeting.time || '',
+    end_time: meeting.end_time || '',
+    place: meeting.place || '',
+    notes: meeting.notes || ''
+  });
+  const [updatingMeeting, setUpdatingMeeting] = useState(false);
+
+  const isOwner = user && meeting.owner_user === user.id;
+  const isParticipant = user && participants.some(p => p.user_id === user.id);
 
   // Load participants
   useEffect(() => {
@@ -31,9 +48,6 @@ export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) 
     };
     loadParticipants();
   }, [meeting.meeting_id, token]);
-
-  const isOwner = user && meeting.owner_user === user.id;
-  const isParticipant = user && participants.some(p => p.user_id === user.id);
 
   const toggleParticipants = () => setShowParticipants(prev => !prev);
 
@@ -103,6 +117,39 @@ export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) 
     }
   };
 
+  const handleEditMeetingChange = (e) => {
+    const { name, value } = e.target;
+    setEditMeetingData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleUpdateMeeting = async () => {
+    try {
+      setUpdatingMeeting(true);
+
+      // שולח רק ערכים מוגדרים, אם ריק – נשאר הערך המקורי
+      const payload = {
+        meeting_id: meeting.meeting_id,
+        title: editMeetingData.title || meeting.title,
+        date: editMeetingData.date || meeting.date,
+        time: editMeetingData.time || meeting.time,
+        end_time: editMeetingData.end_time || meeting.end_time,
+        place: editMeetingData.place || meeting.place,
+        notes: editMeetingData.notes || meeting.notes
+      };
+
+      await updateMeeting({ meeting: payload }, token);
+
+      // עדכון מקומי של הפגישה
+      Object.assign(meeting, payload);
+      setShowEditMeeting(false);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update meeting');
+    } finally {
+      setUpdatingMeeting(false);
+    }
+  };
+
   const openGoogleMaps = (address) => {
     window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '_blank');
   };
@@ -112,7 +159,6 @@ export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) 
   return (
     <div style={{ border: '1px solid gray', padding: 10, marginBottom: 10 }}>
       <h4>{meeting.title}</h4>
-
       <p>
         {meeting.time} – {meeting.place}
         {!isZoom && <button onClick={() => openGoogleMaps(meeting.place)} style={{ marginLeft: 5 }}>show map</button>}
@@ -125,8 +171,28 @@ export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) 
 
         {isParticipant && <button onClick={() => setShowStatusSelect(prev => !prev)}>Change Status</button>}
 
-        {isOwner && <button onClick={handleLoadUsersNotInMeeting}>Add participant</button>}
+        {isOwner && <>
+          <button onClick={handleLoadUsersNotInMeeting}>Add participant</button>
+          <button onClick={() => setShowEditMeeting(prev => !prev)}>Edit Meeting</button>
+        </>}
       </div>
+
+      {console.log(editMeetingData.date)}
+      {console.log(editMeetingData.date.split("T")[0])}
+      {/* Edit Meeting Form */}
+      {isOwner && showEditMeeting && (
+        <div style={{ marginTop: 10, border: '1px solid #ccc', padding: 10 }}>
+          <input name="title" placeholder="Title" value={editMeetingData.title} onChange={handleEditMeetingChange} />
+          <input type="date" name="date" value={editMeetingData.date} onChange={handleEditMeetingChange} />
+          <input type="time" name="time" value={editMeetingData.time} onChange={handleEditMeetingChange} />
+          <input type="time" name="end_time" value={editMeetingData.end_time} onChange={handleEditMeetingChange} />
+          <input name="place" placeholder="Place" value={editMeetingData.place} onChange={handleEditMeetingChange} />
+          <textarea name="notes" placeholder="Notes" value={editMeetingData.notes} onChange={handleEditMeetingChange} />
+          <button onClick={handleUpdateMeeting} disabled={updatingMeeting}>
+            {updatingMeeting ? 'Updating...' : 'Update Meeting'}
+          </button>
+        </div>
+      )}
 
       {isParticipant && showStatusSelect && (
         <div style={{ marginTop: 8 }}>
@@ -158,7 +224,7 @@ export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) 
             <li key={p.participant_id}>
               {p.name} {p.last_name} – <b>{p.status}</b>
               {isOwner && p.user_id !== user.id && (
-                <button onClick={() => handleRemoveParticipant(p.user_id)} style={{ marginLeft: 10, color: 'red' }}>Remove</button>
+                <button onClick={() => handleRemoveParticipant(p.user_id)} style={{ marginLeft: 10, color: 'red'}}>Remove</button>
               )}
             </li>
           ))}
@@ -166,7 +232,7 @@ export default function MeetingCard({ meeting, token, user, onMeetingDeleted }) 
       )}
 
       {isOwner && (
-        <button onClick={handleDelete} disabled={loadingDelete} style={{ color: 'red', marginTop: 10 }}>
+        <button onClick={handleDelete} disabled={loadingDelete} style={{ color: 'red', marginTop: 10}}>
           {loadingDelete ? 'Deleting...' : 'Delete Meeting'}
         </button>
       )}

@@ -26,18 +26,18 @@ exports.getMeetingById = async (id) => {
 };
 
 exports.insertMeeting = async (meeting) => {
-  const formattedDate = meeting.date.slice(0, 10); // "YYYY-MM-DD"
+  // const formattedDate = meeting.date.slice(0, 10); // "YYYY-MM-DD"
   const result = await pool.query(
     `INSERT INTO meetings (title, date, time, end_time, place, owner_user, notes)
     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-    [meeting.title, formattedDate, meeting.time, meeting.end_time, meeting.place, meeting.owner_user, meeting.notes]
+    [meeting.title, meeting.date, meeting.time, meeting.end_time, meeting.place, meeting.owner_user, meeting.notes]
 );
 return result.rows[0];
 };
 
 exports.updateMeeting = async (meeting) => {
   const res = await pool.query(
-    `UPDATE meetings SET date=$1, time=$2, end_time=$3, place=$4, content=$5
+    `UPDATE meetings SET date=$1, time=$2, end_time=$3, place=$4, notes=$5
      WHERE meeting_id=$6 RETURNING *`,
     [meeting.date, meeting.time, meeting.end_time, meeting.place, meeting.notes, meeting.meeting_id]
   );

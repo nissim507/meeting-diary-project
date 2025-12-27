@@ -59,6 +59,8 @@ async function addMeeting(req, res) {
 async function updateMeeting(req, res) {
   try {
     const meeting = req.body.meeting;
+    console.log("req", req.body);
+    console.log("meetingToUpdateeee:",meeting);
     const updated = await meetingControl.updateMeeting(meeting);
     if(updated) 
     {

@@ -10,16 +10,11 @@ exports.getMeetingsByUserId = async (userId, date) => {
     throw new Error('User ID is required');
   }
 
-  let results;
   if(date) {
-    results = await meetingQuery.getMeetingsByUserIdAndDate(userId, date);
-  }
-  else
-  {
-    results = await meetingQuery.getMeetingsByUserId(userId);
+    return await meetingQuery.getMeetingsByUserIdAndDate(userId, date);
   }
 
-  return results;
+  return await meetingQuery.getMeetingsByUserId(userId);
 }
 
 exports.getMeetingById = async (id) => {
@@ -66,13 +61,13 @@ exports.addMeeting = async (newMeeting) => {
   return meeting;
 }
 
-exports.updateMeeting = async (meetingToUpdate) => {
-  if(!meetingToUpdate.meeting_id) {
+exports.updateMeeting = async ({meeting}) => {
+  if(!meeting.meeting_id) {
     throw new Error('Meeting ID is required');
   }
 
-  const index = meeting.findIndex(m => m.id == meetingToUpdate.id);
-  if(index === -1) {
+  const res = meetingQuery.getMeetingById(meeting.meeting_id);
+  if(!res) {
     throw new Error('Meeting not found');
   }
   

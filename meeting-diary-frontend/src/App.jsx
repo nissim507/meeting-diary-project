@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import Login from './pages/login';
+import Login from './pages/Welcome';
 import Signup from './pages/signup';
 import CalendarTable from './components/calenderTable/CalendarTable';
 import AddMeeting from './components/AddMeeting/AddMeeting';
@@ -43,7 +43,7 @@ function App() {
     setView('login');
   };
 
-const renderLogout = ()=> {
+const renderWelcomePage = ()=> {
     return view === 'login' ? (
       <Login onLogin={handleLogin} />
     ) : (
@@ -71,7 +71,7 @@ const renderLogin = ()=> {
 
   return (
     <>
-    {(!token)? renderLogout() : renderLogin()}
+    {(!token)? renderWelcomePage() : renderLogin()}
     </>
   )
 };
