@@ -114,6 +114,7 @@ function App() {
               user={user}
               token={token}
               onMeetingAdded={() => window.location.reload()}
+              closeEditProfile={() => setToggleEditProfile(false)}
             />
           </div>
         )}
@@ -126,6 +127,7 @@ function App() {
               user={user}
               token={token}
               onMeetingAdded={() => window.location.reload()}
+              setToggleAddMeetingStatus={()=>setToggleAddMeetingStatus(false)}
             />
           </div>
         )}

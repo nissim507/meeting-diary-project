@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { addMeeting } from "../../services/api";
 import "./addMeeting.css";
 
-export default function AddMeeting({ user, token, onMeetingAdded }) {
+export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMeetingStatus}) {
   const [title, setTitle] = useState("");
   const [place, setPlace] = useState("");
   const [date, setDate] = useState("");
@@ -61,87 +61,90 @@ export default function AddMeeting({ user, token, onMeetingAdded }) {
 
       await addMeeting(meeting, token);
       onMeetingAdded();
+      alert("succesfull")
     } catch (err) {
       console.error(err);
+      alert(err);
     }
   };
 
   return (
-    <div className="addMeetingModal">
-      <div className="addMeetingContainer">
-        <h3 className="titleMeeting">Add Meeting</h3>
-
-        <div className="inputsContainer">
-          <label htmlFor="Title">Title</label>
-          <input
-            placeholder="Title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-
-          <label htmlFor="username">Username</label>
-          <input
-            placeholder="Place"
-            onChange={(e) => setPlace(e.target.value)}
-          />
-
-          <label htmlFor="date">date</label>
-          <input type="date" onChange={(e) => setDate(e.target.value)} />
-
-          <label htmlFor="time">meeting start</label>
-          <input type="time" onChange={(e) => setTime(e.target.value)} />
-
-          <label htmlFor="time">meeting aend</label>
-          <input type="time" onChange={(e) => setEndTime(e.target.value)} />
-
-          <label htmlFor="notes">Notes</label>
-          <textarea
-            style={{ width: "75%" }}
-            className="notesMeeting"
-            name="notes"
-            placeholder="Notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
-        </div>
-        <div className="">
-          <div className="participantsDropdown">
-            <button
-              type="button"
-              className="dropdownToggle"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              {selectedUsers.length === 0
-                ? "Select participants..."
-                : `${selectedUsers.length} selected`}
-              <span className={`arrow ${isDropdownOpen ? "open" : ""}`}>▼</span>
+    <div className="addMeetingContainer">
+      <div className="titleAddCloseMeeting">
+      <h3 className="titleMeeting"><b>Add Meeting</b></h3>
+        <b><button
+            type="button"
+            className="closeAddMeeting"
+            onClick={setToggleAddMeetingStatus}
+          >
+            X
             </button>
-
-            {isDropdownOpen && (
-              <div className="dropdownMenu">
-                {users.length === 0 ? (
-                  <p className="noUsers">No participants available</p>
-                ) : (
-                  users.map((u) => (
-                    <label key={u.user_id} className="participantOption">
-                      <input
-                        type="checkbox"
-                        checked={selectedUsers.includes(u.user_id)}
-                        onChange={() => toggleUser(u.user_id)}
-                      />
-                      <span>
-                        {u.name} {u.last_name}
-                      </span>
-                    </label>
-                  ))
-                )}
-              </div>
-            )}
+            </b>
           </div>
+      <div className="inputsContainer">
+        <label htmlFor="Title">Title</label>
+        <input placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
 
-          <button className="addMeetingButton" onClick={handleAdd}>
-            Add
+        <label htmlFor="place">Location</label>
+        <input placeholder="Location" onChange={(e) => setPlace(e.target.value)} />
+
+        <label htmlFor="date">Date</label>
+        <input type="date" onChange={(e) => setDate(e.target.value)} />
+
+        <label htmlFor="time">Start At</label>
+        <input type="time" onChange={(e) => setTime(e.target.value)} />
+
+        <label htmlFor="time">End At</label>
+        <input type="time" onChange={(e) => setEndTime(e.target.value)} />
+
+        <label htmlFor="notes">Notes</label>
+        <textarea
+          style={{width: "75%"}}
+          className="notesMeeting"
+          name="notes"
+          placeholder="Notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
+      </div>
+      <div className="">
+        <div className="participantsDropdown">
+          <button
+            type="button"
+            className="dropdownToggle"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            {selectedUsers.length === 0
+              ? "Select participants..."
+              : `${selectedUsers.length} selected`}
+            <span className={`arrow ${isDropdownOpen ? "open" : ""}`}>▼</span>
           </button>
+
+          {isDropdownOpen && (
+            <div className="dropdownMenu">
+              {users.length === 0 ? (
+                <p className="noUsers">No participants available</p>
+              ) : (
+                users.map((u) => (
+                  <label key={u.user_id} className="participantOption">
+                    <input
+                      type="checkbox"
+                      checked={selectedUsers.includes(u.user_id)}
+                      onChange={() => toggleUser(u.user_id)}
+                    />
+                    <span>
+                      {u.name} {u.last_name}
+                    </span>
+                  </label>
+                ))
+              )}
+            </div>
+          )}
         </div>
+
+        <button className="addMeetingButton" onClick={handleAdd}>
+          Add
+        </button>
       </div>
     </div>
   );

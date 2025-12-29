@@ -226,7 +226,25 @@ export default function MeetingCard({
         )}
       </div>
 
-      {showOptions && (
+        {detailsModal && (
+          <MeetingDetails
+            meeting={{ ...meeting, owner_user: ownerName }}
+            onClose={() => setDetailsModal(false)}
+          />
+        )}
+      <div className="meetingDetails">
+        {meeting.time} – {meeting.end_time} {meeting.place}
+        {!isZoom && (
+          <button
+            onClick={() => openGoogleMaps(meeting.place)}
+            style={{ marginLeft: 5 }}
+          >
+            show map
+          </button>
+        )}
+        <button onClick={openOptions}> {showOptionSymbol} </button>
+      </div>
+            {showOptions && (
         <>
           <div className="editMeetingButtons">
             <button onClick={toggleParticipants}>
@@ -303,25 +321,6 @@ export default function MeetingCard({
           )}
         </>
       )}
-
-        {detailsModal && (
-          <MeetingDetails
-            meeting={{ ...meeting, owner_user: ownerName }}
-            onClose={() => setDetailsModal(false)}
-          />
-        )}
-      <div className="meetingDetails">
-        {meeting.time} – {meeting.end_time} {meeting.place}
-        {!isZoom && (
-          <button
-            onClick={() => openGoogleMaps(meeting.place)}
-            style={{ marginLeft: 5 }}
-          >
-            show map
-          </button>
-        )}
-        <button onClick={openOptions}> {showOptionSymbol} </button>
-      </div>
     </div>
   );
 }

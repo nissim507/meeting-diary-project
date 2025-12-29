@@ -1,7 +1,7 @@
 import "./editProfile.css";
 import { updateUserProfile } from "../../services/api";
 
-function EditProfile({ user, token }) {
+function EditProfile({ user, token, closeEditProfile }) {
   // console.log("🚀 ~ EditProfile ~ user:", user);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,15 +19,23 @@ function EditProfile({ user, token }) {
     try {
       const user = await updateUserProfile(updatedUser, token);
       localStorage.setItem("user", JSON.stringify(user));
+      closeEditProfile();
+      alert("succesfull");
     } catch (err) {
       // TODO: show error to user
       console.error(err);
+      alert(err)
     }
   };
 
   return (
     <form className="editProfileContainer" onSubmit={handleSubmit}>
-      <h3>EditProfile</h3>
+      <div className="editProfileCloseContainer">
+      <h3>Edit Profile</h3>
+      <button className="closeEditProfile" onClick={closeEditProfile}>
+        X
+      </button>
+      </div>
       <div className="inputEditProfileContainer">
         <label htmlFor="username">Username</label>
         <input name="username" placeholder={user.username} readOnly />

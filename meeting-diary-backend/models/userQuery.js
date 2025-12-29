@@ -43,9 +43,8 @@ exports.updateUser = async (user) => {
         `UPDATE users SET
             password = COALESCE($1, password),
             name = COALESCE($2,  name),
-            last_name = COALESCE($3, last_name),
-            WHERE user_id = $4 RETURNING *
-            RETURNING *`,
+            last_name = COALESCE($3, last_name)
+            WHERE user_id = $4 RETURNING *`,
         [user.password, user.name, user.last_name, user.user_id]
     );
 

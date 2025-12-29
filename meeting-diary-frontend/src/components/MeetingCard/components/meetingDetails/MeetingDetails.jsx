@@ -5,7 +5,7 @@ import "./meetingDetails.css";
 export default function MeetingDetails({ meeting, onClose }) {
   const { owner_user, title, date, time, end_time, place, notes } = meeting;
   const isZoom = meeting.place.toLowerCase().includes("zoom");
-  
+
   return (
     <div className="meetingDetailsModal" onClick={onClose}>
       <div  className="meetingDetailsMainContainer" onClick={(e) => e.stopPropagation()}>
@@ -21,7 +21,7 @@ export default function MeetingDetails({ meeting, onClose }) {
           </span>
         </p>
         <p className="location" >
-          <b>Loacation: </b>{isZoom?<span>{place}</span>: <a onClick={() => openGoogleMaps(meeting.place)} class="placeARef">{place}</a>}
+          <b>Loacation: </b>{isZoom?<span>{place}</span>: <a onClick={() => openGoogleMaps(meeting.place)} className="placeARef">{place}</a>}
         </p>
         <p className="Notes ">
           <b>Notes: </b> <span>{notes}</span>
