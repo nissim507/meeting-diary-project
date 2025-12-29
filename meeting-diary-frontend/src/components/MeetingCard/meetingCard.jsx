@@ -9,6 +9,8 @@ import {
   updateMeeting,
 } from "../../services/api";
 import EditMeetingForm from "../meetingCard/components/editMeetingForm/EditMeetingForm";
+import MeetingDetails from "../meetingCard/components/meetingDetails/MeetingDetails";
+
 import "./meeting.css";
 
 export default function MeetingCard({
@@ -25,6 +27,7 @@ export default function MeetingCard({
 
   const [showAddUser, setShowAddUser] = useState(false);
   const [addingUser, setAddingUser] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const [usersNotInMeeting, setUsersNotInMeeting] = useState([]);
 
   // Edit meeting
@@ -38,9 +41,12 @@ export default function MeetingCard({
     notes: meeting.notes || "",
   });
   const [updatingMeeting, setUpdatingMeeting] = useState(false);
+  const [detailsModal, setDetailsModal] = useState(false);
+  const [ownerName, setOwnerName] = useState("");
 
-  const isOwner = user && meeting.owner_user === user.id;
-  const isParticipant = user && participants.some((p) => p.user_id === user.id);
+  const isOwner = user && meeting.owner_user === user.user_id;
+  const isParticipant =
+    user && participants.some((p) => p.user_id === user.user_id);
   const editMeetingText = `${showEditMeeting ? "Hide" : "Edit"} Meeting`;
 
   // Load participants
@@ -61,7 +67,7 @@ export default function MeetingCard({
   const handleChangeStatus = async (newStatus) => {
     try {
       setStatusLoading(true);
-      await changeMyStatus(meeting.meeting_id, user.id, newStatus, token);
+      await changeMyStatus(meeting.meeting_id, user.user_id, newStatus, token);
       const data = await getParticipantsByMeeting(meeting.meeting_id, token);
       setParticipants(data);
       setShowStatusSelect(false);
@@ -146,7 +152,6 @@ export default function MeetingCard({
 
       await updateMeeting({ meeting: payload }, token);
 
-      // עדכון מקומי של הפגישה
       Object.assign(meeting, payload);
       setShowEditMeeting(false);
     } catch (err) {
@@ -166,12 +171,50 @@ export default function MeetingCard({
     );
   };
 
+  const openOptions = () => {
+    setShowOptions((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const owner = participants.filter((p) => p.user_id === meeting.owner_user);
+    console.log("🚀 ~ MeetingCard ~ participants:", participants)
+    console.log("🚀 ~ MeetingCard ~ owner:", owner);
+    const name = owner.length && (`${owner[0]?.name} ${owner[0]?.last_name}`);
+    setOwnerName(name);
+  }, [participants]);
+
+  const showOptionSymbol = showOptions ? "▲" : "▼";
   const isZoom = meeting.place.toLowerCase().includes("zoom");
+
+  const renderStatus = () => {
+    return (
+      <div style={{ marginTop: 8 }}>
+        <select
+          disabled={statusLoading}
+          defaultValue=""
+          onChange={(e) => handleChangeStatus(e.target.value)}
+        >
+          <option value="" disabled>
+            Select status
+          </option>
+          <option value="pending">Pending</option>
+          <option value="arrived">Arrived</option>
+          <option value="absent">Absent</option>
+        </select>
+      </div>
+    );
+  };
+
+  const openDetials = () => {
+    setDetailsModal(true);
+  };
 
   return (
     <div className="meetingCardContainer">
       <div className="headerContainer">
-        <h4 className="meetingTitle">{meeting.title}</h4>
+        <h4 className="meetingTitle" onClick={openDetials}>
+          {meeting.title}
+        </h4>
         {isOwner && (
           <button
             className="delete-button"
@@ -182,8 +225,93 @@ export default function MeetingCard({
           </button>
         )}
       </div>
-      <p>
-        {meeting.time} – {meeting.place}
+
+      {showOptions && (
+        <>
+          <div className="editMeetingButtons">
+            <button onClick={toggleParticipants}>
+              {showParticipants ? "Hide participants" : "Show participants"}
+            </button>
+
+            {isParticipant && (
+              <button onClick={() => setShowStatusSelect((prev) => !prev)}>
+                Change Status
+              </button>
+            )}
+
+            {isOwner && (
+              <>
+                <button onClick={handleLoadUsersNotInMeeting}>
+                  Add participant
+                </button>
+                <button onClick={() => setShowEditMeeting((prev) => !prev)}>
+                  {editMeetingText}
+                </button>
+              </>
+            )}
+          </div>
+          {/* Edit Meeting Form */}
+          {isOwner && showEditMeeting && (
+            <EditMeetingForm
+              editMeetingData={editMeetingData}
+              handleEditMeetingChange={handleEditMeetingChange}
+              handleUpdateMeeting={handleUpdateMeeting}
+              updatingMeeting={updatingMeeting}
+            />
+          )}
+
+          {isParticipant && showStatusSelect && renderStatus()}
+
+          {isOwner && showAddUser && (
+            <div style={{ marginTop: 8 }}>
+              <select
+                disabled={addingUser}
+                defaultValue=""
+                onChange={(e) => handleAddParticipant(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select user
+                </option>
+                {usersNotInMeeting.map((u) => (
+                  <option key={u.user_id} value={u.user_id}>
+                    {u.name || "No Name"} {u.last_name || "No Last Name"}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {showParticipants && (
+            <ul className="particpants-container" style={{ marginTop: 10 }}>
+              {participants.map((p) => (
+                <li key={p.participant_id} className="participantListItem">
+                  <div>
+                    {p.name} {p.last_name} –{" "}
+                    <b className="statusParticipant">{p.status}</b>
+                  </div>
+                  {isOwner && p.user_id !== user.user_id && (
+                    <button
+                      className="delete-button"
+                      onClick={() => handleRemoveParticipant(p.user_id)}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+
+        {detailsModal && (
+          <MeetingDetails
+            meeting={{ ...meeting, owner_user: ownerName }}
+            onClose={() => setDetailsModal(false)}
+          />
+        )}
+      <div className="meetingDetails">
+        {meeting.time} – {meeting.end_time} {meeting.place}
         {!isZoom && (
           <button
             onClick={() => openGoogleMaps(meeting.place)}
@@ -192,97 +320,8 @@ export default function MeetingCard({
             show map
           </button>
         )}
-      </p>
-
-      <div className="editMeetingButtons">
-        <button onClick={toggleParticipants}>
-          {showParticipants ? "Hide participants" : "Show participants"}
-        </button>
-
-        {isParticipant && (
-          <button onClick={() => setShowStatusSelect((prev) => !prev)}>
-            Change Status
-          </button>
-        )}
-
-        {isOwner && (
-          <>
-            <button onClick={handleLoadUsersNotInMeeting}>
-              Add participant
-            </button>
-            <button onClick={() => setShowEditMeeting((prev) => !prev)}>
-              {editMeetingText}
-            </button>
-          </>
-        )}
+        <button onClick={openOptions}> {showOptionSymbol} </button>
       </div>
-
-      {/* Edit Meeting Form */}
-      {isOwner && showEditMeeting && (
-        <EditMeetingForm
-          editMeetingData={editMeetingData}
-          handleEditMeetingChange={handleEditMeetingChange}
-          handleUpdateMeeting={handleUpdateMeeting}
-          updatingMeeting={updatingMeeting}
-        />
-      )}
-
-      {isParticipant && showStatusSelect && (
-        <div style={{ marginTop: 8 }}>
-          <select
-            disabled={statusLoading}
-            defaultValue=""
-            onChange={(e) => handleChangeStatus(e.target.value)}
-          >
-            <option value="" disabled>
-              Select status
-            </option>
-            <option value="pending">Pending</option>
-            <option value="arrived">Arrived</option>
-            <option value="absent">Absent</option>
-          </select>
-        </div>
-      )}
-
-      {isOwner && showAddUser && (
-        <div style={{ marginTop: 8 }}>
-          <select
-            disabled={addingUser}
-            defaultValue=""
-            onChange={(e) => handleAddParticipant(e.target.value)}
-          >
-            <option value="" disabled>
-              Select user
-            </option>
-            {usersNotInMeeting.map((u) => (
-              <option key={u.user_id} value={u.user_id}>
-                {u.name || "No Name"} {u.last_name || "No Last Name"}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
-      {showParticipants && (
-        <ul className="particpants-container" style={{ marginTop: 10 }}>
-          {participants.map((p) => (
-            <li key={p.participant_id} className="participantListItem">
-              <div>
-                {p.name} {p.last_name} –{" "}
-                <b className="statusParticipant">{p.status}</b>
-              </div>
-              {isOwner && p.user_id !== user.id && (
-                <button
-                  className="delete-button"
-                  onClick={() => handleRemoveParticipant(p.user_id)}
-                >
-                  Remove
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }

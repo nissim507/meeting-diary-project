@@ -27,20 +27,18 @@ export default function Welcome({ onLogin }) {
 
     try {
       const status = await signupUser(userInfo);
-    if (status === true) {
-      setIsSignUp(false);
-      setIsSuccess(true);
-     }
-    } 
-    catch (err) {
+      if (status === true) {
+        setIsSignUp(false);
+        setIsSuccess(true);
+      }
+    } catch (err) {
       setErrorMessage(err.message);
     }
-  }
+  };
 
   const setSignUpStatus = () => {
     setIsSignUp((status) => !status);
   };
-
   const renderExtraSignUpFields = () => {
     return (
       <>
@@ -48,20 +46,29 @@ export default function Welcome({ onLogin }) {
           name="first-name"
           placeholder="FirstName"
           required
-          onChange={(e) => setUserInfo((userInfo) => ({...userInfo, name: e.target.value}))}
+          onChange={(e) =>
+            setUserInfo((userInfo) => ({ ...userInfo, name: e.target.value }))
+          }
         />
         <input
           name="last-name"
           placeholder="LastName"
           required
-          onChange={(e) => setUserInfo((userInfo) => ({...userInfo, last_name: e.target.value}))}
+          onChange={(e) =>
+            setUserInfo((userInfo) => ({
+              ...userInfo,
+              last_name: e.target.value,
+            }))
+          }
         />
         <input
           name="email"
           type="email"
           placeholder="Email"
           required
-          onChange={(e) => setUserInfo((userInfo) => ({...userInfo, email: e.target.value}))}
+          onChange={(e) =>
+            setUserInfo((userInfo) => ({ ...userInfo, email: e.target.value }))
+          }
         />
       </>
     );
@@ -84,30 +91,43 @@ export default function Welcome({ onLogin }) {
                   name="username"
                   required
                   placeholder="Username"
-                  onChange={(e) => setUserInfo((userInfo) => ({...userInfo, username: e.target.value}))}
+                  onChange={(e) =>
+                    setUserInfo((userInfo) => ({
+                      ...userInfo,
+                      username: e.target.value,
+                    }))
+                  }
                 />
                 <input
                   required
                   name="password"
                   type="password"
                   placeholder="Password"
-                  onChange={(e) => setUserInfo((userInfo) => ({...userInfo, password: e.target.value}))}
+                  onChange={(e) =>
+                    setUserInfo((userInfo) => ({
+                      ...userInfo,
+                      password: e.target.value,
+                    }))
+                  }
                 />
                 {isSignUp && renderExtraSignUpFields()}
               </div>
               <div className="buttons">
                 <button
                   type="submit"
-                  style={{ background: "green", color: "white" }}
-                >
+                  style={{ background: "green", color: "white" }}>
                   {submitTextButton}
                 </button>
                 <button type="button" onClick={setSignUpStatus}>
                   {buttonText}
                 </button>
               </div>
-              {isSuccess && <div className="successfull-text">Succesfull signup</div>}
-              {errorMessage && <div className="fail-error-text">{errorMessage}</div>}
+              {isSuccess && (
+                <div className="successfull-text">Succesfull signup</div>
+              )}
+              {errorMessage && (
+                <div className="fail-error-text">{errorMessage}</div>
+              )}
             </div>
           </form>
         </div>

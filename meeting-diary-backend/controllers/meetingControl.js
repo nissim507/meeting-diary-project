@@ -31,13 +31,18 @@ exports.getMeetingById = async (id) => {
 }
 
 exports.addMeeting = async (newMeeting) => {
+  console.log("hekooooo")
   if(!newMeeting || !newMeeting.title || !newMeeting.date || !newMeeting.time || !newMeeting.owner_user || !newMeeting.place ) 
   {
+     console.log(newMeeting) 
+    console.log("hekooooo")
     throw new Error('Missing meeting data');
   }
   //adding the meeting to meeting DB
+  console.log("addmeeting consol: ", newMeeting);
   const meeting = await meetingQuery.insertMeeting(newMeeting);
-
+  console.log("blablabla")
+  console.log("meeting  controle",meeting)
   if(!meeting || !meeting.meeting_id) 
   {
     throw new Error('Failed to create a meeting');

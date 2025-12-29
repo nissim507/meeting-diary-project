@@ -41,13 +41,12 @@ exports.createUser = async (user) => {
 exports.updateUser = async (user) => {
     const result = await pool.query(
         `UPDATE users SET
-            username = COALESCE($1, username),
-            password = COALESCE($2, password),
-            name = COALESCE($3, name),
-            last_name = COALESCE($4, last_name),
-            email = COALESCE($5, email)
-            WHERE user_id = $6 RETURNING *`,
-        [user.username, user.password, user.name, user.last_name, user.email, user.user_id]
+            password = COALESCE($1, password),
+            name = COALESCE($2,  name),
+            last_name = COALESCE($3, last_name),
+            WHERE user_id = $4 RETURNING *
+            RETURNING *`,
+        [user.password, user.name, user.last_name, user.user_id]
     );
 
     return result.rows[0] ||null;

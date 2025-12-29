@@ -1,30 +1,50 @@
+.addMeetingModal {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(137, 189, 233, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* prevent scroll chaining to the page while modal is open */
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+
 .addMeetingContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  background-color: whitesmoke;
+  justify-content: space-between;
+  background-color: white;
   padding: 30px;
-  width: 30vw;
+  width: 32vw;
+  height: 50vh;
   border-radius: 60px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
   color: black;
 }
 
-input {
+input  {
   width: 75%;
   height: 24px;
   padding: 5px;
   border-radius: 10px;
-  background-color: rgb(197, 192, 192);
+  background-color: whitesmoke;
   color: black;
   opacity: 1;
 }
 
- input::placeholder {
+input::placeholder {
   color: black; /* placeholder text color */
   opacity: 0.5;
+}
+
+.notesMeeting {
+  background-color: whitesmoke;
+  margin-bottom: 10px;
 }
 
 /* Remove default focus/box-shadow on inputs and similar controls */
@@ -54,11 +74,11 @@ button:focus {
   max-width: 300px;
 }
 
-.dropdownToggle {
+.participantsDropdown .dropdownToggle {
   width: 100%;
   padding: 8px 12px;
-  background-color: rgb(197, 192, 192);
-  color: black;
+  background-color: white;
+  color: gray;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -94,7 +114,6 @@ button:focus {
   margin-top: 4px;
   max-height: 250px;
   overflow-y: auto;
-  z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -127,4 +146,30 @@ button:focus {
   text-align: center;
   color: #999;
   font-size: 14px;
+}
+
+.buttonsAddMeeting {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.titleMeeting {
+  all: unset;
+  font-size: large;
+}
+
+.addMeetingContainer .addMeetingButton {
+ margin-top: 10px;
+  width: 100%;
+  height: 30px;
+  background-color: rgb(39, 92, 227);
+  color: white;
 }

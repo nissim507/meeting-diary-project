@@ -33,81 +33,99 @@ export async function getMeetingsByDate(userId, date, token) {
   const res = await fetch(`${API_URL}/meetings/user/${userId}?date=${date}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (!res.ok) throw new Error('Failed to fetch meetings');
+  if (!res.ok) throw new Error("Failed to fetch meetings");
   return await res.json();
 }
 
 export async function addMeeting(meeting, token) {
   const res = await fetch(`${API_URL}/meetings/add`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    
     body: JSON.stringify({ meeting }),
   });
-  if (!res.ok) throw new Error('Failed to add meeting');
+  console.log("meeting", meeting.owner_user)
+  console.log("addmeeting res:", res);
+  if (!res.ok) throw new Error("Failed to add meeting");
   return await res.json();
 }
 
 export const deleteMeeting = async (meetingId, token) => {
   const res = await fetch(`${API_URL}/meetings/${meetingId}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (!res.ok) throw new Error('Failed to delete meeting');
+  if (!res.ok) throw new Error("Failed to delete meeting");
   return await res.json();
-}
+};
 
 // PARTICIPANTS
 export async function getParticipantsByMeeting(meetingId, token) {
   const res = await fetch(`${API_URL}/participants/meeting/${meetingId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (!res.ok) throw new Error('Failed to fetch participants');
+  if (!res.ok) throw new Error("Failed to fetch participants");
   return await res.json();
 }
 
 export async function addParticipant(meetingId, userId, token) {
   const res = await fetch(`${API_URL}/participants/add`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({ meetingId, userId }),
   });
-  if (!res.ok) throw new Error('Failed to add participant');
+  if (!res.ok) throw new Error("Failed to add participant");
   return await res.json();
 }
 
 export async function removeParticipant(meetingId, userId, token) {
   const res = await fetch(`${API_URL}/participants`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({ meetingId, userId }),
   });
-  if (!res.ok) throw new Error('Failed to remove participant');
+  if (!res.ok) throw new Error("Failed to remove participant");
   return await res.json();
 }
 
 export async function changeMyStatus(meetingId, userId, status, token) {
   const res = await fetch(`${API_URL}/participants/update`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({ meetingId, userId, status }),
   });
-  if (!res.ok) throw new Error('Failed to update status');
+  if (!res.ok) throw new Error("Failed to update status");
   return await res.json();
 }
 
 export async function getUsersNotInMeeting(meetingId, token) {
-  const res = await fetch(`${API_URL}/participants/not-in-meeting/${meetingId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) throw new Error('Failed to fetch users not in meeting');
+  const res = await fetch(
+    `${API_URL}/participants/not-in-meeting/${meetingId}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  if (!res.ok) throw new Error("Failed to fetch users not in meeting");
   return await res.json();
 }
 
 export async function updateMeeting(meeting, token) {
   const res = await fetch(`${API_URL}/meetings/update`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ meeting }),
@@ -116,7 +134,26 @@ export async function updateMeeting(meeting, token) {
   if (!res.ok) {
     const err = await res.text();
     console.error(err);
-    throw new Error('Failed to update meeting');
+    throw new Error("Failed to update meeting");
+  }
+
+  return res.json();
+}
+
+export async function updateUserProfile(user, token) {
+  const res = await fetch(`${API_URL}/users/update`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ user }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error(err);
+    throw new Error("Failed to update user profile");
   }
 
   return res.json();

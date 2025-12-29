@@ -5,12 +5,12 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
-
 exports.getUsersByUsername = async (username) => {
   if (!username) 
   {
     return await pool.getAllUsers();
   }
+
   return await pool.getUserByUsername(username);
   
 };
@@ -79,12 +79,8 @@ exports.loginUser = async (username, password) => {
 
   return {
     token,
-    user:{
-      id: user.user_id,
-      username: user.username,
-      email: user.email
-    }
-  }
+    user,
+  };
 };
 
 exports.deleteUser = async (userId) => {

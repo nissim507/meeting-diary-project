@@ -14,7 +14,7 @@
 }
 
 .background {
-  background-color: whitesmoke;
+  background-color: white;
   padding: 30px;
   height: 60vh;
   width: 30vw;
@@ -45,18 +45,18 @@
   flex-direction: column;
   gap: 15px;
 }
-
  input {
   width: 75%;
   height: 24px;
   padding: 5px;
   border-radius: 10px;
-  background-color: rgb(197, 192, 192);
+  background-color: whitesmoke;
   color: black;
   opacity: 1;
+  border: 1px solid gray;
 }
 
- input::placeholder {
+input::placeholder {
   color: black; /* placeholder text color */
   opacity: 0.5;
 }

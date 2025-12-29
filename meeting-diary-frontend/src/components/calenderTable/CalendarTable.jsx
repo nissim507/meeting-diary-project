@@ -17,7 +17,7 @@ export default function CalendarTable({ user, token }) {
       try {
         const date = selectedDate.format("YYYY-MM-DD");
         const data = await getMeetingsByDate(
-          user.user_id || user.id,
+          user.user_id || user.user_id,
           date,
           token
         );
