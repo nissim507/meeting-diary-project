@@ -6,7 +6,8 @@
     "header header"
     "menu sideMenu";
   /* "footer footer"; */
-  grid-template-columns: 1fr 5fr;
+  /* grid-template-columns: 1fr 5fr; */
+  grid-template-columns: 0;
   gap: 3px;
   /* display: flex;
   flex-direction: column;
