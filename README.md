@@ -47,21 +47,22 @@ A full-stack web application for managing meetings and participants, built with 
 
 ### Main Dashboard - Calendar View
 <img width="1728" height="866" alt="image" src="https://github.com/user-attachments/assets/9edff325-75a2-4fed-bb53-a2b1e3aefc63" />
-<img width="613" height="882" alt="image" src="https://github.com/user-attachments/assets/2ab29d75-69e7-4e54-b62b-9d8b737b1a93" />
+<img width="1897" height="888" alt="image" src="https://github.com/user-attachments/assets/2cb687ca-2834-4f49-a29f-baad060b197a" />
+
 
 *Main dashboard showing the interactive calendar and meetings list for the selected date. The sidebar displays user information and quick action buttons.*
 
 ### Meeting Card Details
-<img width="472" height="291" alt="image" src="https://github.com/user-attachments/assets/7f8dadf7-0b8c-4304-b50a-251392725203" />
-<img width="736" height="552" alt="image" src="https://github.com/user-attachments/assets/6cae6a4d-9404-4cf7-9834-fda024d4cd88" />
+<img width="1893" height="895" alt="image" src="https://github.com/user-attachments/assets/91618ce1-dedd-434e-bd67-e85e79c1952b" />
+<img width="1895" height="881" alt="image" src="https://github.com/user-attachments/assets/7a526e85-55ed-4ef8-ae25-e0572d2bfff8" />
 *Meeting card showing meeting details, time, location, and action buttons. Owners can edit/delete, participants can change their status.*
 
 ### Add Meeting Modal
-<img width="1182" height="652" alt="image" src="https://github.com/user-attachments/assets/c22a4d8a-a2cc-408a-9a6f-c6c18681c902" />
+<img width="1895" height="881" alt="image" src="https://github.com/user-attachments/assets/643a62c2-902c-497d-ad24-9ccecde8daee" />
 *Modal dialog for creating a new meeting. Includes fields for title, date, time, location, notes, and participant selection.*
 
 ### Edit Profile
-<img width="1755" height="857" alt="image" src="https://github.com/user-attachments/assets/e0d6ac60-191f-4313-8929-c73676ff66fb" />
+<img width="1897" height="887" alt="image" src="https://github.com/user-attachments/assets/62c547b3-d4d1-4691-9b87-06455663fd2d" />
 *User profile editing interface. Allows users to update their name, email, and password.*
 
 ### Meeting Details & Participants
