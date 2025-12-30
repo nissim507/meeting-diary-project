@@ -2,6 +2,27 @@
 
 A full-stack web application for managing meetings and participants, built with Node.js (Express) backend and React frontend.
 
+## Quick Start
+
+1. **Prerequisites**: Install Node.js 20.x and PostgreSQL 12+
+2. **Database**: Create database `meeting_diary` and run schema script
+3. **Backend**: 
+   ```bash
+   cd meeting-diary-backend
+   npm install
+   # Create .env file (see Environment Variables section)
+   npm start
+   ```
+4. **Frontend**: 
+   ```bash
+   cd meeting-diary-frontend
+   npm install
+   npm run dev
+   ```
+5. **Access**: Open http://localhost:5173 in your browser
+
+For detailed step-by-step instructions, see the sections below.
+
 ## Features
 
 ### 🔐 Authentication & User Management
@@ -49,7 +70,6 @@ A full-stack web application for managing meetings and participants, built with 
 <img width="1728" height="866" alt="image" src="https://github.com/user-attachments/assets/9edff325-75a2-4fed-bb53-a2b1e3aefc63" />
 <img width="1897" height="888" alt="image" src="https://github.com/user-attachments/assets/2cb687ca-2834-4f49-a29f-baad060b197a" />
 
-
 *Main dashboard showing the interactive calendar and meetings list for the selected date. The sidebar displays user information and quick action buttons.*
 
 ### Meeting Card Details
@@ -74,7 +94,218 @@ A full-stack web application for managing meetings and participants, built with 
 
 *Participant list with status indicators. Owners can add/remove participants, and all participants can update their attendance status.*
 
-> **Note:** To add screenshots, create a `docs/screenshots/` folder in the project root and place your screenshot images there. Update the image paths above to match your actual screenshot filenames.
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (version 20.x or higher)
+  - Download from [nodejs.org](https://nodejs.org/)
+  - Verify installation: `node --version`
+
+- **PostgreSQL** (version 12 or higher)
+  - Download from [postgresql.org](https://www.postgresql.org/download/)
+  - Verify installation: `psql --version`
+
+- **npm** (comes with Node.js)
+  - Verify installation: `npm --version`
+
+## Installation Guide
+
+### Step 1: Set Up PostgreSQL Database
+
+#### Windows Installation
+
+1. Download PostgreSQL from [postgresql.org/download/windows/](https://www.postgresql.org/download/windows/)
+2. Run the installer and follow the setup wizard
+3. During installation, set a password for the `postgres` superuser (remember this password)
+4. Complete the installation
+
+#### macOS Installation
+
+Using Homebrew:
+```bash
+brew install postgresql@14
+brew services start postgresql@14
+```
+
+#### Linux (Ubuntu/Debian) Installation
+
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+#### Create Database
+
+1. Open PostgreSQL command line (psql) or use pgAdmin:
+   ```bash
+   psql -U postgres
+   ```
+
+2. Create a new database:
+   ```sql
+   CREATE DATABASE meeting_diary;
+   ```
+
+3. (Optional) Create a dedicated user:
+   ```sql
+   CREATE USER meeting_user WITH PASSWORD 'your_password';
+   GRANT ALL PRIVILEGES ON DATABASE meeting_diary TO meeting_user;
+   ```
+
+4. Exit psql:
+   ```sql
+   \q
+   ```
+
+#### Set Up Database Schema
+
+After creating the database, run the schema creation script:
+
+```bash
+psql -U postgres -d meeting_diary -f meeting-diary-backend/sql/01_schema.sql
+```
+
+**Available SQL Scripts (located in `meeting-diary-backend/sql/`):**
+- `00_reset.sql` - Drops all tables (use with caution!)
+- `01_schema.sql` - Creates all tables, indexes, and constraints (idempotent)
+- `02_seed_data.sql` - SQL-only seed data template (requires users to exist first)
+- `03_generate_seed.js` - Node.js script that generates seed data with proper bcrypt hashes (recommended)
+- `README.md` - Detailed documentation for all SQL scripts
+
+For more details, see `meeting-diary-backend/sql/README.md`.
+
+### Step 2: Configure Environment Variables
+
+The `.env` file is **not** included in the repository for security reasons. You need to create it manually.
+
+1. Navigate to the backend directory:
+   ```bash
+   cd meeting-diary-backend
+   ```
+
+2. Create a `.env` file in the `meeting-diary-backend` directory with the following content:
+
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_NAME=meeting_diary
+
+# Server Configuration
+PORT=3000
+
+# JWT Configuration
+JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
+JWT_EXPIRES_IN=1h
+
+# Optional: For seed script (03_generate_seed.js)
+# DATABASE_URL=postgresql://postgres:your_password@localhost:5432/meeting_diary
+```
+
+**Important Security Notes:**
+- Never commit the `.env` file to version control
+- Use a strong, random string for `JWT_SECRET` in production
+- Change default passwords in production environments
+- Replace `your_password` with your actual PostgreSQL password
+
+**Note:** The seed generation script (`sql/03_generate_seed.js`) uses `DATABASE_URL` connection string format. If you want to use the seed script, uncomment and add the `DATABASE_URL` line in your `.env` file.
+
+### Step 3: Install Backend Dependencies
+
+1. Navigate to the backend directory:
+   ```bash
+   cd meeting-diary-backend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Test database connection:
+   ```bash
+   node testDb.js
+   ```
+   You should see: `DB connection OK! Time is: [timestamp]`
+
+### Step 4: Install Frontend Dependencies
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd meeting-diary-frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Step 5: (Optional) Generate Seed Data
+
+If you want to start with test data, run the seed generation script:
+
+```bash
+cd meeting-diary-backend
+node sql/03_generate_seed.js
+```
+
+This creates test users with password: `password123`
+- Username: `admin`, `john.doe`, or `jane.smith`
+- Password: `password123`
+
+**Note:** Make sure `DATABASE_URL` is set in your `.env` file for the seed script to work.
+
+## Running the Application
+
+### Development Mode
+
+1. **Start the Backend Server:**
+   ```bash
+   cd meeting-diary-backend
+   npm start
+   ```
+   The API server will run on `http://localhost:3000` (or the port specified in your `.env` file)
+   
+   You should see: `Server running on port 3000`
+
+2. **Start the Frontend Development Server:**
+   Open a new terminal window:
+   ```bash
+   cd meeting-diary-frontend
+   npm run dev
+   ```
+   The React app will typically run on `http://localhost:5173` (Vite default port)
+
+3. **Open your browser** and navigate to `http://localhost:5173`
+
+### Production Build
+
+To build the frontend for production:
+
+```bash
+cd meeting-diary-frontend
+npm run build
+```
+
+The built files will be in the `dist` directory.
+
+## First Steps After Installation
+
+After starting the application:
+
+1. **Navigate to** http://localhost:5173 in your browser
+2. **Create an account**: Click "SignUp" to create your first account, OR
+3. **Use test account** (if you ran the seed script):
+   - Username: `admin`, `john.doe`, or `jane.smith`
+   - Password: `password123`
+4. **Log in** with your credentials
+5. **Create your first meeting** using the "Add Meeting" button in the sidebar
+6. **Explore features**: Try adding participants, editing meetings, and updating your profile
 
 ## Project Structure
 
@@ -105,226 +336,6 @@ meeting-diary-project/
     └── src/                 # React source code
 ```
 
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- **Node.js** (version 20.x or higher)
-  - Download from [nodejs.org](https://nodejs.org/)
-  - Verify installation: `node --version`
-
-- **PostgreSQL** (version 12 or higher)
-  - Download from [postgresql.org](https://www.postgresql.org/download/)
-  - Verify installation: `psql --version`
-
-- **npm** (comes with Node.js)
-  - Verify installation: `npm --version`
-
-## PostgreSQL Setup
-
-### Windows Installation
-
-1. Download PostgreSQL from [postgresql.org/download/windows/](https://www.postgresql.org/download/windows/)
-2. Run the installer and follow the setup wizard
-3. During installation, set a password for the `postgres` superuser (remember this password)
-4. Complete the installation
-
-### macOS Installation
-
-Using Homebrew:
-```bash
-brew install postgresql@14
-brew services start postgresql@14
-```
-
-### Linux (Ubuntu/Debian) Installation
-
-```bash
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-```
-
-### Create Database
-
-1. Open PostgreSQL command line (psql) or use pgAdmin:
-   ```bash
-   psql -U postgres
-   ```
-
-2. Create a new database:
-   ```sql
-   CREATE DATABASE meeting_diary;
-   ```
-
-3. (Optional) Create a dedicated user:
-   ```sql
-   CREATE USER meeting_user WITH PASSWORD 'your_password';
-   GRANT ALL PRIVILEGES ON DATABASE meeting_diary TO meeting_user;
-   ```
-
-4. Exit psql:
-   ```sql
-   \q
-   ```
-
-### Connection String Format
-
-The application uses a PostgreSQL connection string. The format is:
-```
-postgresql://[user]:[password]@[host]:[port]/[database]
-```
-
-Example:
-```
-postgresql://postgres:your_password@localhost:5432/meeting_diary
-```
-
-### Database Schema Setup
-
-After creating the database, you need to set up the schema. The project includes SQL scripts in the `meeting-diary-backend/sql/` folder:
-
-**Option 1: Using SQL Scripts (Recommended)**
-
-1. Run the schema creation script:
-   ```bash
-   psql -U postgres -d meeting_diary -f meeting-diary-backend/sql/01_schema.sql
-   ```
-
-2. (Optional) Generate seed data with proper password hashing:
-   ```bash
-   cd meeting-diary-backend
-   node sql/03_generate_seed.js
-   ```
-   This creates test users with password: `password123`
-
-**Option 2: Using Node.js Script**
-
-You can also run the seed generation script which handles both schema verification and seed data:
-```bash
-cd meeting-diary-backend
-node sql/03_generate_seed.js
-```
-
-**Available SQL Scripts (located in `meeting-diary-backend/sql/`):**
-- `00_reset.sql` - Drops all tables (use with caution!)
-- `01_schema.sql` - Creates all tables, indexes, and constraints (idempotent)
-- `02_seed_data.sql` - SQL-only seed data template (requires users to exist first)
-- `03_generate_seed.js` - Node.js script that generates seed data with proper bcrypt hashes (recommended)
-- `README.md` - Detailed documentation for all SQL scripts
-
-For more details, see `meeting-diary-backend/sql/README.md`.
-
-## Environment Variables
-
-The `.env` file is **not** included in the repository for security reasons. You need to create it manually.
-
-### Backend Environment Variables
-
-1. Navigate to the backend directory:
-   ```bash
-   cd meeting-diary-backend
-   ```
-
-2. Create a `.env` file in the `meeting-diary-backend` directory
-
-3. Copy the contents from `.env.example` (if it exists) or create it with the following variables:
-
-```env
-# Database Configuration
-DATABASE_URL=postgresql://postgres:your_password@localhost:5432/meeting_diary
-
-# Server Configuration
-PORT=3000
-
-# JWT Configuration
-JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
-JWT_EXPIRES_IN=1h
-```
-
-**Important Security Notes:**
-- Never commit the `.env` file to version control
-- Use a strong, random string for `JWT_SECRET` in production
-- Change default passwords in production environments
-
-### Alternative Database Configuration
-
-If you prefer to use individual database connection parameters instead of `DATABASE_URL`, you can modify `config/db.js` to use:
-- `DB_HOST` (default: localhost)
-- `DB_PORT` (default: 5432)
-- `DB_USER` (default: postgres)
-- `DB_PASSWORD` (your database password)
-- `DB_NAME` (default: meeting_diary)
-
-## Installation
-
-### Backend Setup
-
-1. Navigate to the backend directory:
-   ```bash
-   cd meeting-diary-backend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create the `.env` file (see Environment Variables section above)
-
-4. Set up the database schema (see Database Schema Setup section above)
-
-5. Test database connection:
-   ```bash
-   node testDb.js
-   ```
-   You should see: `DB connection OK! Time is: [timestamp]`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd meeting-diary-frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-## Running the Application
-
-### Development Mode
-
-1. **Start the Backend Server:**
-   ```bash
-   cd meeting-diary-backend
-   npm start
-   ```
-   The API server will run on `http://localhost:3000` (or the port specified in your `.env` file)
-
-2. **Start the Frontend Development Server:**
-   Open a new terminal window:
-   ```bash
-   cd meeting-diary-frontend
-   npm run dev
-   ```
-   The React app will typically run on `http://localhost:5173` (Vite default port)
-
-3. Open your browser and navigate to the frontend URL (usually `http://localhost:5173`)
-
-### Production Build
-
-To build the frontend for production:
-
-```bash
-cd meeting-diary-frontend
-npm run build
-```
-
-The built files will be in the `dist` directory.
-
 ## API Endpoints
 
 The backend API provides the following main endpoints:
@@ -332,21 +343,29 @@ The backend API provides the following main endpoints:
 - **Authentication:**
   - `POST /users/login` - User login
   - `POST /users/add` - User registration
-  - `POST /users/update` - Update user profile
+  - `POST /users/update` - Update user profile (requires auth)
+  - `DELETE /users/:id` - Delete user (requires auth)
+
+- **Users:**
+  - `GET /users?username=xxx` - Get users by username (requires auth)
+  - `GET /allusers` - Get all users with names (requires auth)
 
 - **Meetings:**
-  - `GET /meetings/user/:userId?date=YYYY-MM-DD` - Get meetings by date
-  - `POST /meetings/add` - Create a new meeting
-  - `POST /meetings/update` - Update a meeting
-  - `DELETE /meetings/:meetingId` - Delete a meeting
+  - `GET /meetings` - Get all meetings (requires auth)
+  - `GET /meetings/user/:userId?date=YYYY-MM-DD` - Get meetings by user and date (requires auth)
+  - `GET /meetings/:id` - Get meeting by ID (requires auth)
+  - `POST /meetings/add` - Create a new meeting (requires auth)
+  - `POST /meetings/update` - Update a meeting (requires auth)
+  - `DELETE /meetings/:id` - Delete a meeting (requires auth)
 
 - **Participants:**
-  - `GET /participants/meeting/:meetingId` - Get participants for a meeting
-  - `POST /participants/add` - Add a participant
-  - `DELETE /participants` - Remove a participant
-  - `POST /participants/update` - Update participant status
+  - `GET /participants/meeting/:meetingId` - Get participants for a meeting (requires auth)
+  - `GET /participants/not-in-meeting/:meetingId` - Get users not in a meeting (requires auth)
+  - `POST /participants/add` - Add a participant (requires auth)
+  - `POST /participants/update` - Update participant status (requires auth)
+  - `DELETE /participants` - Remove a participant (requires auth)
 
-**Note:** Most endpoints require JWT authentication via the `Authorization: Bearer <token>` header.
+**Note:** Most endpoints require JWT authentication via the `Authorization: Bearer <token>` header. Only `/users/login` and `/users/add` are public endpoints.
 
 ## Testing the API
 
@@ -400,12 +419,13 @@ For complete documentation and examples, see `meeting-diary-backend/test-data/RE
 - Verify database credentials in `.env` file
 - Ensure the database exists: `psql -U postgres -l` (lists all databases)
 - Check if PostgreSQL is listening on the correct port (default: 5432)
+- Test connection: `node meeting-diary-backend/testDb.js`
 
 ### Port Already in Use
 
 If port 3000 is already in use:
 - Change the `PORT` value in your `.env` file
-- Update the `API_URL` in `meeting-diary-frontend/src/services/api.js` to match
+- Update the `API_URL` constant in `meeting-diary-frontend/src/services/api.js` to match your backend URL
 
 ### Module Not Found Errors
 
@@ -415,9 +435,17 @@ If port 3000 is already in use:
 ### SQL Script Errors
 
 - Ensure PostgreSQL is running before executing SQL scripts
-- Verify database connection string in `.env` file
+- Verify database connection variables in `.env` file (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`)
+- For the seed script (`03_generate_seed.js`), ensure `DATABASE_URL` is set in `.env`
 - Check that the database exists: `psql -U postgres -l`
 - For detailed SQL script help, see `meeting-diary-backend/sql/README.md`
+
+### Frontend Not Connecting to Backend
+
+- Verify backend is running on the correct port (check console output)
+- Check that `API_URL` in `meeting-diary-frontend/src/services/api.js` matches your backend URL
+- Check browser console for CORS errors (backend should have CORS enabled)
+- Verify JWT token is being sent in Authorization header
 
 ## Project Resources
 
@@ -436,18 +464,25 @@ If port 3000 is already in use:
 
 ### Backend
 - Node.js 20.x
-- Express.js
-- PostgreSQL
+- Express.js 5.x
+- PostgreSQL (using `pg` library)
 - JWT (JSON Web Tokens) for authentication
-- bcrypt for password hashing
+- bcrypt/bcryptjs for password hashing
+- dotenv for environment variable management
+- CORS for cross-origin resource sharing
+
+**Note:** The `package.json` includes `mysql2` and `sequelize` dependencies, but the application currently uses PostgreSQL with the `pg` library directly. These MySQL dependencies are not used in the current implementation.
 
 ### Frontend
 - React 19
 - Vite
-- Material-UI (MUI)
-- Day.js for date handling
+- Material-UI (MUI) - UI components and date picker
+- @mui/x-date-pickers - Date and time picker components
+- Day.js - Date manipulation and formatting
+- Emotion - CSS-in-JS styling (used by MUI)
+
+**Note:** The frontend API URL is configured in `meeting-diary-frontend/src/services/api.js` and defaults to `http://localhost:3000`. Update this if your backend runs on a different port or host.
 
 ## License
 
 ISC
-
