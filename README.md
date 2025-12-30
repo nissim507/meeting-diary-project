@@ -313,10 +313,21 @@ After starting the application:
 meeting-diary-project/
 ├── meeting-diary-backend/    # Node.js/Express API
 │   ├── api/                  # API routes
+│   │   ├── userApi.js       # User endpoints
+│   │   ├── meetingApi.js    # Meeting endpoints
+│   │   └── participantsApi.js # Participant endpoints
 │   ├── config/              # Database configuration
+│   │   └── db.js            # PostgreSQL connection
 │   ├── controllers/         # Business logic
+│   │   ├── userControl.js
+│   │   ├── meetingControl.js
+│   │   └── participantsControl.js
 │   ├── middleware/          # Authentication middleware
+│   │   └── auth.js          # JWT authentication
 │   ├── models/              # Database queries
+│   │   ├── userQuery.js
+│   │   ├── meetingQuery.js
+│   │   └── participantsQuery.js
 │   ├── sql/                 # PostgreSQL database scripts
 │   │   ├── 00_reset.sql     # Database reset script
 │   │   ├── 01_schema.sql   # Schema creation script
@@ -330,10 +341,36 @@ meeting-diary-project/
 │   │   ├── auth/            # Authentication examples
 │   │   ├── complete-test-scenario.json # Full workflow example
 │   │   └── README.md        # Test data documentation
-│   └── index.js             # Server entry point
+│   ├── index.js             # Server entry point
+│   ├── testDb.js            # Database connection test
+│   └── package.json         # Backend dependencies
 │
 └── meeting-diary-frontend/   # React application
-    └── src/                 # React source code
+    ├── src/                  # React source code
+    │   ├── components/      # React components
+    │   │   ├── AddMeeting/  # Add meeting form
+    │   │   ├── calenderTable/ # Calendar and meeting list
+    │   │   ├── editProfile/ # Profile editing
+    │   │   ├── MeetingCard/ # Meeting card component
+    │   │   │   └── components/ # Nested components
+    │   │   │       ├── editMeetingForm/ # Edit meeting form
+    │   │   │       └── meetingDetails/ # Meeting details modal
+    │   │   └── menu/        # Sidebar menu
+    │   ├── pages/           # Page components
+    │   │   ├── Welcome.jsx  # Login/signup page
+    │   │   └── signup.jsx   # Signup component
+    │   ├── services/        # API service layer
+    │   │   └── api.js       # API client functions
+    │   ├── assets/          # Static assets
+    │   ├── App.jsx          # Main app component
+    │   ├── App.css          # App styles
+    │   ├── main.jsx         # Application entry point
+    │   └── index.css        # Global styles
+    ├── public/              # Public assets
+    ├── index.html           # HTML template
+    ├── vite.config.js       # Vite configuration
+    ├── eslint.config.js     # ESLint configuration
+    └── package.json         # Frontend dependencies
 ```
 
 ## API Endpoints
