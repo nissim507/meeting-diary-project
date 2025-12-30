@@ -41,31 +41,36 @@ A full-stack web application for managing meetings and participants, built with 
 
 ### Login & Signup Page
 <img width="1900" height="990" alt="image" src="https://github.com/user-attachments/assets/3677b66a-3322-4634-8b69-7747adacda5c" />
+<img width="1907" height="886" alt="image" src="https://github.com/user-attachments/assets/68bb1f84-0bbe-42af-bb00-0c128ba5bd61" />
 
 *Welcome page with login and signup functionality. Users can toggle between login and registration forms.*
 
 ### Main Dashboard - Calendar View
-![Calendar View](docs/screenshots/calendar-view.png)
+<img width="1728" height="866" alt="image" src="https://github.com/user-attachments/assets/9edff325-75a2-4fed-bb53-a2b1e3aefc63" />
+<img width="613" height="882" alt="image" src="https://github.com/user-attachments/assets/2ab29d75-69e7-4e54-b62b-9d8b737b1a93" />
+
 *Main dashboard showing the interactive calendar and meetings list for the selected date. The sidebar displays user information and quick action buttons.*
 
 ### Meeting Card Details
-![Meeting Card](docs/screenshots/meeting-card.png)
+<img width="472" height="291" alt="image" src="https://github.com/user-attachments/assets/7f8dadf7-0b8c-4304-b50a-251392725203" />
+<img width="736" height="552" alt="image" src="https://github.com/user-attachments/assets/6cae6a4d-9404-4cf7-9834-fda024d4cd88" />
 *Meeting card showing meeting details, time, location, and action buttons. Owners can edit/delete, participants can change their status.*
 
 ### Add Meeting Modal
-![Add Meeting](docs/screenshots/add-meeting.png)
+<img width="1182" height="652" alt="image" src="https://github.com/user-attachments/assets/c22a4d8a-a2cc-408a-9a6f-c6c18681c902" />
 *Modal dialog for creating a new meeting. Includes fields for title, date, time, location, notes, and participant selection.*
 
 ### Edit Profile
-![Edit Profile](docs/screenshots/edit-profile.png)
+<img width="1755" height="857" alt="image" src="https://github.com/user-attachments/assets/e0d6ac60-191f-4313-8929-c73676ff66fb" />
 *User profile editing interface. Allows users to update their name, email, and password.*
 
 ### Meeting Details & Participants
-![Meeting Details](docs/screenshots/meeting-details.png)
+<img width="1052" height="566" alt="image" src="https://github.com/user-attachments/assets/6feebc1c-97f7-4bdf-b266-a883b054ea59" />
 *Detailed view of a meeting showing all participants, their statuses, and management options for meeting owners.*
 
 ### Participant Management
-![Participants](docs/screenshots/participants.png)
+<img width="1502" height="872" alt="image" src="https://github.com/user-attachments/assets/d93ee113-f802-43ca-9109-8ce83e691d63" />
+
 *Participant list with status indicators. Owners can add/remove participants, and all participants can update their attendance status.*
 
 > **Note:** To add screenshots, create a `docs/screenshots/` folder in the project root and place your screenshot images there. Update the image paths above to match your actual screenshot filenames.
