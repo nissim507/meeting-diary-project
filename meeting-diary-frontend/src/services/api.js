@@ -8,7 +8,9 @@ export async function loginUser(username, password) {
     body: JSON.stringify({ username, password }),
   });
   if (!res.ok) {
+    console.log("login fail")
     const error = await res.json();
+    console.log("login fail", res)
     throw new Error(error.message || "Login failed");
   }
   return res.json();
