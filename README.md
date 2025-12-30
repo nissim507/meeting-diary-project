@@ -40,8 +40,8 @@ A full-stack web application for managing meetings and participants, built with 
 ## UI Screenshots
 
 ### Login & Signup Page
-![Login Page](<img width="1900" height="990" alt="image" src="https://github.com/user-attachments/assets/848da69d-128a-4030-af22-b04961d0d9fd" />
-)
+<img width="1900" height="990" alt="image" src="https://github.com/user-attachments/assets/3677b66a-3322-4634-8b69-7747adacda5c" />
+
 *Welcome page with login and signup functionality. Users can toggle between login and registration forms.*
 
 ### Main Dashboard - Calendar View
