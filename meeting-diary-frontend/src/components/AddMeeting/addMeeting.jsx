@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { addMeeting } from "../../services/api";
-import "./addMeeting.css";
+import "./AddMeeting.css";
 
 export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMeetingStatus}) {
   const [title, setTitle] = useState("");
@@ -18,7 +18,7 @@ export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMe
     async function loadUsers() {
       try {
         // getting all the users with the name and last_name
-        const res = await fetch("http://localhost:3000/allusers", {
+        const res = await fetch("https://meeting-diary-backend.onrender.com/allusers", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

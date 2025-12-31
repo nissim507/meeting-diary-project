@@ -52,7 +52,7 @@ function App() {
       setTimeout(() => {
         setToggleAddMeetingStatus((current) => !current);
         modal.classList.remove("closing");
-      }, 300); // Match animation duration
+      }, 300); 
     } else {
       // Opening - toggle immediately
       setToggleAddMeetingStatus((current) => !current);
@@ -77,12 +77,9 @@ function App() {
   }
 
   const renderWelcomePage = () => {
-    // return view === "login" ? (
+    
     return <Welcome onLogin={handleLogin} />;
-    // ) : (
-    // <Signup onSignup={() => setView("login")} />
-    // <></>
-    // );
+    
   };
 
   const renderLogin = () => {
@@ -91,7 +88,6 @@ function App() {
         <div className="header">
           <h1 className="mainHeadline">My Meeting Calendar</h1>
         </div>
-        {/* <div className="screenContainer"> */}
         <div className="sideMenu">
           <Menu
             firstName={user?.name}
@@ -140,7 +136,7 @@ function App() {
 
 export async function getParticipantsByMeeting(meetingId, token) {
   const res = await fetch(
-    `http://localhost:3000/participants/meeting/${meetingId}`,
+    `https://meeting-diary-backend.onrender.com/participants/meeting/${meetingId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

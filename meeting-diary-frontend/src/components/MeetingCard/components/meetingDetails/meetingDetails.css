@@ -17,8 +17,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
-  /* align-items: start; */
   background-color: white;
   padding: 30px;
   width: 20vw;

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://meeting-diary-backend.onrender.com";
 
 // LOGIN
 export async function loginUser(username, password) {

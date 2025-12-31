@@ -1,4 +1,4 @@
-import "./menu.css";
+import "./Menu.css";
 
 export default function Menu({
   handleLogout,
@@ -24,7 +24,6 @@ export default function Menu({
       </div>
       <div className="buttonsContainer">
         <div className="mainButtonsContainer">
-          {/* <div className="underline"></div> */}
           <button className="addMeetingButton" onClick={toggleAddMeeting}>
             Add Meeting
           </button>

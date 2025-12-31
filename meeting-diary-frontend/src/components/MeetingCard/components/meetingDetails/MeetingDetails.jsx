@@ -1,4 +1,4 @@
-import "./meetingDetails.css";
+import "./MeetingDetails.css";
 
 
 
