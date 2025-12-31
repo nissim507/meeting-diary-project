@@ -8,8 +8,8 @@ import {
   getUsersNotInMeeting,
   updateMeeting,
 } from "../../services/api";
-import EditMeetingForm from "../meetingCard/components/editMeetingForm/EditMeetingForm";
-import MeetingDetails from "../meetingCard/components/meetingDetails/MeetingDetails";
+import EditMeetingForm from "../MeetingCard/components/editMeetingForm/EditMeetingForm";
+import MeetingDetails from "../MeetingCard/components/meetingDetails/MeetingDetails";
 
 import "./MeetingCard.css";
 
