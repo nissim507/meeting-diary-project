@@ -11,7 +11,7 @@ import {
 import EditMeetingForm from "../meetingCard/components/editMeetingForm/EditMeetingForm";
 import MeetingDetails from "../meetingCard/components/meetingDetails/MeetingDetails";
 
-import "./meeting.css";
+import "./MeetingCard.css";
 
 export default function MeetingCard({
   meeting,
