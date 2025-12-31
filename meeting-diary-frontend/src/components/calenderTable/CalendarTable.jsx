@@ -5,7 +5,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import { getMeetingsByDate } from "../../services/api";
 import MeetingCard from "../MeetingCard/MeetingCard";
-import "CalendarTable.css"
+import "./CalendarTable.css"
 
 export default function CalendarTable({ user, token }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
