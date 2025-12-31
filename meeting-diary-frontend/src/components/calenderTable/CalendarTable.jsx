@@ -4,7 +4,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import { getMeetingsByDate } from "../../services/api";
-import MeetingCard from "../meetingCard/MeetingCard";
+import MeetingCard from "../MeetingCard/MeetingCard";
 import "./Calendar.css"
 
 export default function CalendarTable({ user, token }) {
