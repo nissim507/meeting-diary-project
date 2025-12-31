@@ -1,4 +1,4 @@
-import "./editProfile.css";
+import "./EditProfile.css";
 import { updateUserProfile } from "../../services/api";
 
 function EditProfile({ user, token, closeEditProfile }) {
