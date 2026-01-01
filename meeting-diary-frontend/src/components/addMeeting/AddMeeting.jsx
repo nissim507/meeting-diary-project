@@ -18,7 +18,7 @@ export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMe
     async function loadUsers() {
       try {
         // getting all the users with the name and last_name
-        const res = await fetch("https://meeting-diary-backend.onrender.com/allusers", {
+        const res = await fetch("https://meeting-diary-backend.onrender.com/allusers"/* "http://localhost:3000/allusers"*/, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -61,7 +61,7 @@ export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMe
 
       await addMeeting(meeting, token);
       onMeetingAdded();
-      alert("succesfull")
+      alert("succesfull");
     } catch (err) {
       console.error(err);
       alert(err);
@@ -71,22 +71,27 @@ export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMe
   return (
     <div className="addMeetingContainer">
       <div className="titleAddCloseMeeting">
-      <h3 className="titleMeeting"><b>Add Meeting</b></h3>
-        <b><button
+        <h3 className="titleMeeting">
+          <b>Add Meeting</b>
+        </h3>
+        <b>
+          <button
             type="button"
             className="closeAddMeeting"
-            onClick={setToggleAddMeetingStatus}
-          >
+            onClick={setToggleAddMeetingStatus}>
             X
-            </button>
-            </b>
-          </div>
+          </button>
+        </b>
+      </div>
       <div className="inputsContainer">
         <label htmlFor="Title">Title</label>
         <input placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
 
         <label htmlFor="place">Location</label>
-        <input placeholder="Location" onChange={(e) => setPlace(e.target.value)} />
+        <input
+          placeholder="Location"
+          onChange={(e) => setPlace(e.target.value)}
+        />
 
         <label htmlFor="date">Date</label>
         <input type="date" onChange={(e) => setDate(e.target.value)} />
@@ -99,7 +104,7 @@ export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMe
 
         <label htmlFor="notes">Notes</label>
         <textarea
-          style={{width: "75%"}}
+          style={{ width: "75%" }}
           className="notesMeeting"
           name="notes"
           placeholder="Notes"
@@ -112,8 +117,7 @@ export default function AddMeeting({ user, token, onMeetingAdded, setToggleAddMe
           <button
             type="button"
             className="dropdownToggle"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          >
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
             {selectedUsers.length === 0
               ? "Select participants..."
               : `${selectedUsers.length} selected`}

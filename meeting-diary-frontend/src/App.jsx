@@ -137,6 +137,7 @@ function App() {
 export async function getParticipantsByMeeting(meetingId, token) {
   const res = await fetch(
     `https://meeting-diary-backend.onrender.com/participants/meeting/${meetingId}`,
+    // `http://localhost:3000/participants/meeting/${meetingId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,21 +1,29 @@
 .meetingCardContainer {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  border-radius: 50px;
-  gap: 10px;
-  background-color: whitesmoke;
+  /* padding: 20px; */
+  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); */
+  /* border-radius: 30px; */
+  /* background-color: whitesmoke; */
+  /* border: 1px solid rgba(0, 0, 0, 0.1); */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   color: black;
-  width: 400px;
-  height: fit-content;
+  width: 450px;
+  /* height: 20px; */
 }
 
-.headerContainer {
+/* .headerContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+} */
+ .headerContainer {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  /* gap: 12px; */
 }
+
 
 .meetingCardContainer button {
   font-size: 10px;
@@ -33,6 +41,7 @@
 
 .meetingCardContainer .delete-button {
   color: red;
+  box-shadow: unset;
 }
 
 .meetingTitle {
@@ -116,10 +125,105 @@ select option:checked {
   color: whitesmoke;
 }
 
-.meetingDetails {
+/* .meetingDetails {
+  grid-column: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 5px;
+} */
+
+.meetingDetails {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 10px;
+  gap: 10px;
+  white-space: nowrap;
 }
+
+
+.map-link {
+  color: #58b3fe;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.map-link:hover {
+  color: #1e90ff;
+}
+.map-link:active {
+  color: #104e8b;
+}
+
+.menuMeeting {
+  position: absolute;
+  width: 150px;
+  /* left: calc(50% - 75px); */
+  height: fit-content;
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+.menuMeeting button {
+  font-size: 12px;
+  padding: 6px 12px;
+  height: 30px;
+  box-shadow: none;
+  background-color: transparent;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menuMeeting .delete-button-menu {
+  color: red;
+}
+
+.selectParticipants {
+  appearance: none;
+  width: 100%;
+  padding: 10px 35px 10px 12px;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+
+  /* Dropdown arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.selectParticipants:hover {
+  border-color: #999;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.selectParticipants:focus {
+  border-color: #5b9dd9;
+  box-shadow: 0 0 0 3px rgba(91, 157, 217, 0.2);
+}
+
+.meetingCardContainer .headerContainer .showEditingModalButton {
+
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+

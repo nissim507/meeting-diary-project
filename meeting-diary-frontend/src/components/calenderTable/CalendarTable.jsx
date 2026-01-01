@@ -10,6 +10,7 @@ import "./CalendarTable.css"
 export default function CalendarTable({ user, token }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [meetings, setMeetings] = useState([]);
+  const [colors, setColors] = useState({});
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -39,6 +40,30 @@ export default function CalendarTable({ user, token }) {
     fetchMeetings();
   }, [selectedDate, user, token]);
 
+  useEffect(() => {
+    const generateColors = () => {
+      const newColors = {};
+      meetings.forEach((m) => {
+        if (!colors[m.meeting_id]) {
+          const randomColor = `#${Math.floor(Math.random() * 16777215).toString(
+            16
+          )}`;
+          newColors[m.meeting_id] = randomColor;
+        }
+      });
+      setColors(newColors);
+    };
+    generateColors();
+  }, [meetings]);
+
+  const handleMeetingUpdated = (updated) => {
+    setMeetings((prev) =>
+      prev.map((m) =>
+        m.meeting_id === (updated.meeting_id || updated.id) ? updated : m
+      )
+    );
+  };
+
   const handleMeetingDeleted = (deletedId) => {
     setMeetings((prev) => prev.filter((m) => m.meeting_id !== deletedId));
   };
@@ -46,29 +71,39 @@ export default function CalendarTable({ user, token }) {
   return (
     <div className="calendarContainer">
 
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar
-        date={selectedDate}
-        onChange={(newDate) => setSelectedDate(newDate)}
-      />
-      <h2>Meetings on {selectedDate.format("YYYY-MM-DD")}</h2>
-      <ul className="meetingsContainer">
-        {meetings.length === 0 ? (
-          <p>No meetings</p>
-        ) : (
-          meetings.map((m) => (
-            <li key={m.meeting_id}>
-              <MeetingCard
-                meeting={m}
-                token={token}
-                user={user}
-                onMeetingDeleted={handleMeetingDeleted}
-              />
-            </li>
-          ))            
-        )}
-      </ul>
-    </LocalizationProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateCalendar
+          date={selectedDate}
+          onChange={(newDate) => setSelectedDate(newDate)}
+        />
+        <h2>Meetings on {selectedDate.format("YYYY-MM-DD")}</h2>
+        <div>
+          {meetings.length === 0 ? (
+            <p>No meetings</p>
+          ) : (
+            <div className="meetingsContainer">
+              {meetings.map((m) => (
+                <div key={m.meeting_id}>
+                  <div className="meetingCardRow">
+                    <div
+                      className="meetingColorIndicator"
+                      style={{ backgroundColor: colors[m.meeting_id] }}
+                    />
+                    <MeetingCard
+                      meeting={m}
+                      token={token}
+                      user={user}
+                      onMeetingDeleted={handleMeetingDeleted}
+                      onMeetingUpdated={handleMeetingUpdated}
+                    />
+                  </div>
+                  <div className="divider" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </LocalizationProvider>
     </div>
   );
 }

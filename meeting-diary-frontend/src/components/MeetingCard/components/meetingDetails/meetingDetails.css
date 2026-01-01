@@ -75,10 +75,6 @@ button:focus {
   flex-direction: column;
 }
 
-.meetingDetailsOwner {
-  /* border-top: 1px solid gray; */
-}
-
 .meetingDetailsTitle {
   width: 100%;
   font-size: large;

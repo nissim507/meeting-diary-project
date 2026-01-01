@@ -5,24 +5,27 @@ import "./welcome.css";
 export default function Welcome({ onLogin }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorSignUpMessage, setErrorSignUpMessage] = useState("");
+  const [errorLoginMessage, setErrorLoginMessage] = useState("")
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const data = await loginUser(userInfo.username, userInfo.password);
-    if (data.token) {
-      onLogin(data.token, data.user);
-    } else {
-      setError(data.message || "Login failed");
-    }
+    setErrorLoginMessage("");
+    try{
+
+      const data = await loginUser(userInfo.username, userInfo.password);
+      if (data.token) 
+        onLogin(data.token, data.user);
+      } catch(err) {
+        setErrorLoginMessage("Username or password is incorrect");
+      }
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (!userInfo.username || !userInfo.password) {
-      setError("Missing details");
+      setErrorSignUpMessage("Missing details");
     }
 
     try {
@@ -32,12 +35,14 @@ export default function Welcome({ onLogin }) {
         setIsSuccess(true);
       }
     } catch (err) {
-      setErrorMessage(err.message);
+      setErrorSignUpMessage(err.message);
     }
   };
 
   const setSignUpStatus = () => {
     setIsSignUp((status) => !status);
+    setErrorLoginMessage("");
+    setErrorSignUpMessage("");
   };
   const renderExtraSignUpFields = () => {
     return (
@@ -83,7 +88,7 @@ export default function Welcome({ onLogin }) {
       <div className="userInteraction">
         <div className="background">
           <h2 className="header">Login</h2>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {errorSignUpMessage && <p style={{ color: "red" }}>{errorSignUpMessage}</p>}
           <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
             <div className="userFields">
               <div className="fields">
@@ -111,6 +116,11 @@ export default function Welcome({ onLogin }) {
                   }
                 />
                 {isSignUp && renderExtraSignUpFields()}
+                {errorLoginMessage && (
+    <div style={{ color: "red", marginTop: "10px" }}>
+      {errorLoginMessage}
+    </div>
+    )}
               </div>
               <div className="buttons">
                 <button
@@ -125,9 +135,10 @@ export default function Welcome({ onLogin }) {
               {isSuccess && (
                 <div className="successfull-text">Succesfull signup</div>
               )}
-              {errorMessage && (
-                <div className="fail-error-text">{errorMessage}</div>
+              {errorSignUpMessage && (
+                <div className="fail-error-text">{errorSignUpMessage}</div>
               )}
+              
             </div>
           </form>
         </div>

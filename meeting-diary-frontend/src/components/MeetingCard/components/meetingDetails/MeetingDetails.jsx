@@ -1,7 +1,5 @@
 import "./meetingDetails.css";
 
-
-
 export default function MeetingDetails({ meeting, onClose }) {
   const { owner_user, title, date, time, end_time, place, notes } = meeting;
   const isZoom = meeting.place.toLowerCase().includes("zoom");
@@ -32,10 +30,10 @@ export default function MeetingDetails({ meeting, onClose }) {
 }
 
 const openGoogleMaps = (address) => {
-    window.open(
-      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        address
-      )}`,
-      "_blank"
-    );
-  };
+  window.open(
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      address
+    )}`,
+    "_blank"
+  );
+};

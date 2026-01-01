@@ -29,6 +29,7 @@ input::placeholder {
 .notesMeeting {
   background-color: whitesmoke;
   margin-bottom: 10px;
+  border-radius: 10px;
 }
 
 /* Remove default focus/box-shadow on inputs and similar controls */
@@ -167,4 +168,11 @@ button:focus {
 .titleAddCloseMeeting .closeAddMeeting {
   color: red;
   
+}
+
+input[type="date"] {
+  color-scheme: black;
+}
+input[type="time"]{
+  color-scheme: black;
 }

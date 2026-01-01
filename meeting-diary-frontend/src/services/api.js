@@ -1,5 +1,5 @@
 const API_URL = "https://meeting-diary-backend.onrender.com";
-
+// const API_URL = "http://localhost:3000";
 // LOGIN
 export async function loginUser(username, password) {
   const res = await fetch(`${API_URL}/users/login`, {
@@ -123,22 +123,19 @@ export async function getUsersNotInMeeting(meetingId, token) {
   return await res.json();
 }
 
-export async function updateMeeting(meeting, token) {
-  const res = await fetch(`${API_URL}/meetings/update`, {
-    method: "POST",
+export async function updateMeeting(id, payload, token) {
+  const res = await fetch(`/api/meetings/${id}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: JSON.stringify({ meeting }),
+    body: JSON.stringify(payload),
   });
-
   if (!res.ok) {
     const err = await res.text();
-    console.error(err);
-    throw new Error("Failed to update meeting");
+    throw new Error(err || "Update failed");
   }
-
   return res.json();
 }
 
