@@ -125,7 +125,7 @@ export async function getUsersNotInMeeting(meetingId, token) {
 
 export async function updateMeeting(id, payload, token) {
   const res = await fetch(`/api/meetings/${id}`, {
-    method: "PUT",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),

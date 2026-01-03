@@ -129,6 +129,7 @@ export default function EditMeetingModal({
       title: form.get("title") || meeting.title,
       date: form.get("date") || meeting.date,
       time: form.get("time") || meeting.time,
+      end_time: meeting.end_time,
       location: form.get("location") || meeting.location,
       notes: form.get("notes") || meeting.notes,
     };
@@ -347,7 +348,7 @@ export default function EditMeetingModal({
             <input name="location" defaultValue={meeting.location || ""} />
 
             <label>Date</label>
-            <input name="date" defaultValue={meeting.date || ""} />
+            <input type="date" defaultValue={meeting.date || ""} />
 
             <label>Time</label>
             <input name="time" defaultValue={meeting.time || ""} />
