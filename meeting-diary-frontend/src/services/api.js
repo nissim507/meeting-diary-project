@@ -123,19 +123,37 @@ export async function getUsersNotInMeeting(meetingId, token) {
   return await res.json();
 }
 
+// export async function updateMeeting(id, payload, token) {
+//   const res = await fetch(`/api/meetings/${id}`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+//     },
+//     body: JSON.stringify(payload),
+//   });
+//   if (!res.ok) {
+//     const err = await res.text();
+//     throw new Error(err || "Update failed");
+//   }
+//   return res.json();
+// }
+
 export async function updateMeeting(id, payload, token) {
   const res = await fetch(`/api/meetings/${id}`, {
-    method: "POST",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: JSON.stringify(payload),
   });
+
   if (!res.ok) {
     const err = await res.text();
     throw new Error(err || "Update failed");
   }
+
   return res.json();
 }
 

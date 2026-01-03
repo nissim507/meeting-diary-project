@@ -6,7 +6,7 @@ module.exports = function(app) {
   app.get('/meetings/user/:userId', authenticate, getMeetingsByUserId);
   app.get('/meetings/:id', authenticate, getMeetingById);
   app.post('/meetings/add', authenticate, addMeeting);
-  app.post('/meetings/update', authenticate, updateMeeting);
+  app.put('/meetings/:id', authenticate, updateMeeting);
   app.delete('/meetings/:id', authenticate, deleteMeeting);
 };
 
