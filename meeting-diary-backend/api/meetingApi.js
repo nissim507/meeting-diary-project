@@ -49,9 +49,7 @@ async function getMeetingById(req, res) {
 async function addMeeting(req, res) {
   try {
     const newMeeting = req.body.meeting;
-    console.log(newMeeting);
     const meeting = await meetingControl.addMeeting(newMeeting);
-    console.log("meeting:",meeting);
     res.status(201).json(meeting);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -64,7 +62,6 @@ async function updateMeeting(req, res) {
       ...req.body,
       meeting_id: req.params.id,
     };
-
     const updated = await meetingControl.updateMeeting(meeting);
 
     if (updated) {

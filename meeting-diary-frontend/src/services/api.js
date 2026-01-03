@@ -8,9 +8,7 @@ export async function loginUser(username, password) {
     body: JSON.stringify({ username, password }),
   });
   if (!res.ok) {
-    console.log("login fail")
     const error = await res.json();
-    console.log("login fail", res)
     throw new Error(error.message || "Login failed");
   }
   return res.json();
@@ -49,8 +47,6 @@ export async function addMeeting(meeting, token) {
     
     body: JSON.stringify({ meeting }),
   });
-  console.log("meeting", meeting.owner_user)
-  console.log("addmeeting res:", res);
   if (!res.ok) throw new Error("Failed to add meeting");
   return await res.json();
 }
@@ -123,22 +119,6 @@ export async function getUsersNotInMeeting(meetingId, token) {
   return await res.json();
 }
 
-// export async function updateMeeting(id, payload, token) {
-//   const res = await fetch(`/api/meetings/${id}`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-//     },
-//     body: JSON.stringify(payload),
-//   });
-//   if (!res.ok) {
-//     const err = await res.text();
-//     throw new Error(err || "Update failed");
-//   }
-//   return res.json();
-// }
-
 export async function updateMeeting(id, payload, token) {
   const res = await fetch(`${API_URL}/meetings/${id}`, {
     method: "PUT",
@@ -153,7 +133,7 @@ export async function updateMeeting(id, payload, token) {
     const err = await res.text();
     throw new Error(err || "Update failed");
   }
-
+  alert("meeting update Successful");
   return res.json();
 }
 

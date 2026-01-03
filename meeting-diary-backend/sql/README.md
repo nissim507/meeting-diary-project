@@ -110,13 +110,11 @@ const pool = new Pool({
 async function runScript(filename) {
   const sql = fs.readFileSync(`sql/${filename}`, 'utf8');
   await pool.query(sql);
-  console.log(`✓ Executed ${filename}`);
 }
 
 // Run schema script
 runScript('01_schema.sql')
   .then(() => {
-    console.log('Database setup complete!');
     process.exit(0);
   })
   .catch(err => {

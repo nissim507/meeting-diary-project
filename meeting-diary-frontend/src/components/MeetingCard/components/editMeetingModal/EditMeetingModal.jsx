@@ -129,8 +129,8 @@ export default function EditMeetingModal({
       title: form.get("title") || meeting.title,
       date: form.get("date") || meeting.date,
       time: form.get("time") || meeting.time,
-      end_time: meeting.end_time,
-      location: form.get("location") || meeting.location,
+      end_time: form.get("time") || meeting.end_time,
+      place: form.get("location") || meeting.place,
       notes: form.get("notes") || meeting.notes,
     };
 
@@ -345,13 +345,16 @@ export default function EditMeetingModal({
             <input name="title" defaultValue={meeting.title || ""} />
 
             <label>Location</label>
-            <input name="location" defaultValue={meeting.location || ""} />
+            <input name="place" defaultValue={meeting.place || ""} />
 
             <label>Date</label>
-            <input type="date" defaultValue={meeting.date || ""} />
+            <input type="date" name="date" defaultValue={meeting.date || ""} />
 
             <label>Time</label>
-            <input name="time" defaultValue={meeting.time || ""} />
+            <input type="time" name="time" defaultValue={meeting.time || ""} />
+
+            <label>Time</label>
+            <input type="time" name="end_time" defaultValue={meeting.end_time || ""} />
 
             <label>Notes</label>
             <textarea className="notesMeetingTextarea"

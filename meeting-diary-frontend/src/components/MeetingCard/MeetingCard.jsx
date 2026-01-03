@@ -75,7 +75,6 @@ export default function MeetingCard({
 
   const handleRightClick = (event) => {
     event.preventDefault(); // Prevents default browser context menu
-    console.log("Right clicked!");
     setShowMenu(() => true);
   };
 

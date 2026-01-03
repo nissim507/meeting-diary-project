@@ -2,7 +2,6 @@ import "./EditProfile.css";
 import { updateUserProfile } from "../../services/api";
 
 function EditProfile({ user, token, closeEditProfile }) {
-  // console.log("🚀 ~ EditProfile ~ user:", user);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -11,7 +10,6 @@ function EditProfile({ user, token, closeEditProfile }) {
       last_name: form.get("lastName") || user.last_name,
       password: form.get("password") || user.password,
     };
-    // console.log("Profile payload:", payload);
     const updatedUser = {
       ...user,
       ...payload,
