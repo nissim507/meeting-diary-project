@@ -66,42 +66,24 @@ exports.addMeeting = async (newMeeting) => {
   return meeting;
 }
 
-// exports.updateMeeting = async ({meeting}) => {
-//   if(!meeting.meeting_id) {
-//     throw new Error('Meeting ID is required');
-//   }
-
-//   const res = meetingQuery.getMeetingById(meeting.meeting_id);
-//   if(!res) {
-//     throw new Error('Meeting not found');
-//   }
-  
-//   return await meetingQuery.updateMeeting(meeting);
-// }
-
-// exports.deleteMeeting = async (id) => {
-//   if(!id) {
-//     throw new Error('Meeting ID is required');
-//   }
-
-//   return await meetingQuery.deleteMeeting(id);
-// }
-
-async function updateMeeting(req, res) {
-  try {
-    const meeting = {
-      ...req.body,
-      meeting_id: req.params.id
-    };
-
-    const updated = await meetingControl.updateMeeting({ meeting });
-
-    if (updated) {
-      res.status(200).json(updated);
-    } else {
-      res.status(404).json({ message: 'Meeting not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+exports.updateMeeting = async (meeting) => {
+  if (!meeting.meeting_id) {
+    throw new Error("Meeting ID is required");
   }
+
+  const existing = await meetingQuery.getMeetingById(meeting.meeting_id);
+  if (!existing) {
+    throw new Error("Meeting not found");
+  }
+
+  return await meetingQuery.updateMeeting(meeting);
+};
+
+exports.deleteMeeting = async (id) => {
+  if(!id) {
+    throw new Error('Meeting ID is required');
+  }
+
+  return await meetingQuery.deleteMeeting(id);
 }
+

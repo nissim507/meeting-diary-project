@@ -60,17 +60,17 @@ async function addMeeting(req, res) {
 
 async function updateMeeting(req, res) {
   try {
-    const meeting = req.body.meeting;
-    console.log("req", req.body);
-    console.log("meetingToUpdateeee:",meeting);
+    const meeting = {
+      ...req.body,
+      meeting_id: req.params.id,
+    };
+
     const updated = await meetingControl.updateMeeting(meeting);
-    if(updated) 
-    {
+
+    if (updated) {
       res.status(200).json(updated);
-    }
-    else 
-    {
-      res.status(404).json({ message: 'Meeting not found' });
+    } else {
+      res.status(404).json({ message: "Meeting not found" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
