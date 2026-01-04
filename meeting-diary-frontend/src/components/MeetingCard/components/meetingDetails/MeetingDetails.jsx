@@ -5,7 +5,7 @@ export default function MeetingDetails({ meeting, onClose }) {
   const isZoom = meeting.place.toLowerCase().includes("zoom");
 
   return (
-    <div className="meetingDetailsModal" onClick={onClose}>
+    <div className="meetingDetailsModal" onClick={onClose} onContextMenu={(e)=> e.stopPropagation()}>
       <div  className="meetingDetailsMainContainer" onClick={(e) => e.stopPropagation()}>
         <h4 className="meetingDetailsTitle">{title}</h4>
         <div className="seprator"></div>

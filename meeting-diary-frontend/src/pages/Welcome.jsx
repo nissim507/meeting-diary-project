@@ -30,7 +30,7 @@ export default function Welcome({ onLogin }) {
 
     try {
       const status = await signupUser(userInfo);
-      if (status === true) {
+      if (status) {
         setIsSignUp(false);
         setIsSuccess(true);
       }
@@ -88,7 +88,6 @@ export default function Welcome({ onLogin }) {
       <div className="userInteraction">
         <div className="background">
           <h2 className="header">Login</h2>
-          {/* {errorSignUpMessage && <p style={{ color: "red" }}>{errorSignUpMessage}</p>} */}
           <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
             <div className="userFields">
               <div className="fields">
@@ -117,10 +116,10 @@ export default function Welcome({ onLogin }) {
                 />
                 {isSignUp && renderExtraSignUpFields()}
                 {errorLoginMessage && (
-    <div style={{ color: "red", marginTop: "10px" }}>
-      {errorLoginMessage}
-    </div>
-    )}
+                  <div style={{ color: "red", marginTop: "10px" }}>
+                    {errorLoginMessage}
+                  </div>
+                )}
               </div>
               <div className="buttons">
                 <button

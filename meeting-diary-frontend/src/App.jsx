@@ -9,7 +9,6 @@ import "./App.css";
 function App() {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [view, setView] = useState("login"); // 'login' | 'signup'
   const [showToggleAddMeetingStatus, setToggleAddMeetingStatus] =
     useState(false);
   const [showToggleEditProfile, setToggleEditProfile] = useState(false);
@@ -39,7 +38,6 @@ function App() {
   const handleLogout = () => {
     localStorage.clear();
     setToken(null);
-    setView("login");
   };
 
   function toggleAddMeeting() {
@@ -132,24 +130,6 @@ function App() {
   };
 
   return <>{!token ? renderWelcomePage() : renderLogin()}</>;
-}
-
-export async function getParticipantsByMeeting(meetingId, token) {
-  const res = await fetch(
-    `https://meeting-diary-backend.onrender.com/participants/meeting/${meetingId}`,
-    // `http://localhost:3000/participants/meeting/${meetingId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch participants");
-  }
-
-  return await res.json();
 }
 
 export default App;
