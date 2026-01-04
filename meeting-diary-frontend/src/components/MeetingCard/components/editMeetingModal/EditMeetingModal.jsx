@@ -129,7 +129,7 @@ export default function EditMeetingModal({
       title: form.get("title") || meeting.title,
       date: form.get("date") || meeting.date,
       time: form.get("time") || meeting.time,
-      end_time: form.get("time") || meeting.end_time,
+      end_time: form.get("end_time") || meeting.end_time,
       place: form.get("location") || meeting.place,
       notes: form.get("notes") || meeting.notes,
     };
